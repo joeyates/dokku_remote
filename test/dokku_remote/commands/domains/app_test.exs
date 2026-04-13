@@ -3,12 +3,12 @@ defmodule DokkuRemote.Commands.Domains.AppTest do
 
   import Mox
 
-  setup :verify_on_exit!
-
   alias DokkuRemote.AppCommand
   alias DokkuRemote.Commands.Domains.App
 
-  defp app, do: AppCommand.new(dokku_app: "my-app", dokku_host: "dokku.example.com")
+  setup :verify_on_exit!
+
+  defp app(), do: AppCommand.new(dokku_app: "my-app", dokku_host: "dokku.example.com")
 
   describe "get/1" do
     test "returns the domain when domains are enabled and a vhost is set" do

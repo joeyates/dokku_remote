@@ -3,12 +3,12 @@ defmodule DokkuRemote.Commands.Letsencrypt.AppTest do
 
   import Mox
 
-  setup :verify_on_exit!
-
   alias DokkuRemote.AppCommand
   alias DokkuRemote.Commands.Letsencrypt.App
 
-  defp app, do: AppCommand.new(dokku_app: "my-app", dokku_host: "dokku.example.com")
+  setup :verify_on_exit!
+
+  defp app(), do: AppCommand.new(dokku_app: "my-app", dokku_host: "dokku.example.com")
 
   describe "set/3" do
     test "runs letsencrypt:set and returns :ok" do

@@ -3,9 +3,9 @@ defmodule DokkuRemote.AppCommandTest do
 
   import Mox
 
-  setup :verify_on_exit!
-
   alias DokkuRemote.AppCommand
+
+  setup :verify_on_exit!
 
   describe "new/1" do
     test "creates a struct with given options" do

@@ -3,12 +3,12 @@ defmodule DokkuRemote.Commands.Ports.AppTest do
 
   import Mox
 
-  setup :verify_on_exit!
-
   alias DokkuRemote.AppCommand
   alias DokkuRemote.Commands.Ports.App
 
-  defp app, do: AppCommand.new(dokku_app: "my-app", dokku_host: "dokku.example.com")
+  setup :verify_on_exit!
+
+  defp app(), do: AppCommand.new(dokku_app: "my-app", dokku_host: "dokku.example.com")
 
   describe "set_80/2" do
     test "runs ports:set for http:80 and returns :ok" do

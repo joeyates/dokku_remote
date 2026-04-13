@@ -3,12 +3,12 @@ defmodule DokkuRemote.Commands.Apps.AppTest do
 
   import Mox
 
-  setup :verify_on_exit!
-
   alias DokkuRemote.AppCommand
   alias DokkuRemote.Commands.Apps.App
 
-  defp app, do: AppCommand.new(dokku_app: "my-app", dokku_host: "dokku.example.com")
+  setup :verify_on_exit!
+
+  defp app(), do: AppCommand.new(dokku_app: "my-app", dokku_host: "dokku.example.com")
 
   describe "exists?/1" do
     test "returns true when the app exists" do
