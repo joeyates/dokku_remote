@@ -2,6 +2,7 @@
 title: Implement Missing Functions
 description: Implement the missing Dokku command modules for docker-options, enter, git, logs, network, proxy, ps, and storage.
 branch: feature/implement-missing-functions
+status: done
 ---
 
 ## Overview
@@ -22,8 +23,8 @@ Note: `apps:create` is already implemented in `DokkuRemote.Commands.Apps.App` an
 - [x] 6. Implement `DokkuRemote.Commands.Ps.App` with `rebuild/1`, `report/1`, `restart/1`, `stop/1`; write tests.
 - [x] 7. Implement `DokkuRemote.Commands.Storage.App` with `ensure_directory/2` (`storage:ensure-directory APP DIR`) and `mount/3` (`storage:mount APP HOST_DIR:CONTAINER_DIR`); write tests.
 - [x] 8. Implement `DokkuRemote.Commands.Enter` with `run/1` (`enter APP`); this is an interactive command — note any constraints on how it fits the existing `AppCommand` pattern; write tests.
-- [ ] 9. Ask the user for feedback on the state of the implementation and carry out any requested corrections.
-- [ ] 10. Mark the plan as "done".
+- [x] 9. Ask the user for feedback on the state of the implementation and carry out any requested corrections.
+- [x] 10. Mark the plan as "done".
 
 ## Principal Files
 
