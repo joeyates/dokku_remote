@@ -12,7 +12,7 @@ Add test coverage for the project.
 
 # Implement Missing Functions
 
-Status: [ ]
+Status: [x]
 
 ## Description
 
