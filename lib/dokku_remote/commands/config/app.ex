@@ -1,12 +1,18 @@
 defmodule DokkuRemote.Commands.Config.App do
   alias DokkuRemote.AppCommand
 
+  @app_command_impl Application.compile_env(
+                      :dokku_remote,
+                      :"DokkuRemote.AppCommand",
+                      DokkuRemote.AppCommand
+                    )
+
   def set(%AppCommand{} = app, key, value, opts \\ []) do
     restart = opts[:restart]
     do_resart = if restart, do: "", else: "--no-restart "
     command = "config:set #{do_resart} #{app.dokku_app} #{key}=#{value}"
 
-    case AppCommand.run(app, command) do
+    case @app_command_impl.run(app, command) do
       {:ok, _output} -> :ok
       {:error, output, exit} -> {:error, output, exit}
     end
@@ -17,7 +23,7 @@ defmodule DokkuRemote.Commands.Config.App do
     do_resart = if restart, do: "", else: "--no-restart "
     command = "config:unset #{do_resart} #{app.dokku_app} #{key}"
 
-    case AppCommand.run(app, command) do
+    case @app_command_impl.run(app, command) do
       {:ok, _output} -> :ok
       {:error, output, exit} -> {:error, output, exit}
     end
