@@ -1,0 +1,3 @@
+%{
+  "collectable_streamer": {:hex, :collectable_streamer, "0.2.1", "6e16530a40525aa065b8c94bfc72a2a22c2d171c88a608b5dddffe4f8b646851", [:mix], [], "hexpm", "a5f9ad2c09f7048cc3317406df43a8d5c6de2cf42d893747dee897b859abb28e"},
+}

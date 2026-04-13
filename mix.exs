@@ -18,6 +18,8 @@ defmodule DokkuRemote.MixProject do
   end
 
   defp deps do
-    []
+    [
+      {:collectable_streamer, "~> 0.2.1"}
+    ]
   end
 end
