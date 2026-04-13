@@ -7,9 +7,14 @@ defmodule DokkuRemote.MixProject do
       version: "0.1.0",
       elixir: "~> 1.17",
       start_permanent: Mix.env() == :prod,
+      elixirc_paths: elixirc_paths(Mix.env()),
+      config_path: "config/config.exs",
       deps: deps()
     ]
   end
+
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
 
   def application do
     [
@@ -19,7 +24,8 @@ defmodule DokkuRemote.MixProject do
 
   defp deps do
     [
-      {:collectable_streamer, "~> 0.2.1"}
+      {:collectable_streamer, "~> 0.2.1"},
+      {:mox, "~> 1.0", only: :test}
     ]
   end
 end
