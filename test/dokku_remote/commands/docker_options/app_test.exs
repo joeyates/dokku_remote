@@ -26,7 +26,8 @@ defmodule DokkuRemote.Commands.DockerOptions.AppTest do
         {:error, "App my-app does not exist", 1}
       end)
 
-      assert App.add(app(), "run", "--cap-add=NET_ADMIN") == {:error, "App my-app does not exist", 1}
+      assert App.add(app(), "run", "--cap-add=NET_ADMIN") ==
+               {:error, "App my-app does not exist", 1}
     end
   end
 end
