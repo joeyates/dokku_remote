@@ -2,6 +2,7 @@
 title: Add Tests
 description: Add ExUnit test coverage for all modules using Mox for mocking.
 branch: feature/add-tests
+status: done
 ---
 
 ## Overview
@@ -17,8 +18,8 @@ Add ExUnit test coverage for all modules using Mox for mocking. Mocks live in `t
 - [x] 5. Test `Commands.Domains.App`: use `Application.compile_env` and `DokkuRemote.AppCommand.Mock`; write tests.
 - [x] 6. Test `Commands.Letsencrypt.App`: use `Application.compile_env` and `DokkuRemote.AppCommand.Mock`; write tests.
 - [x] 7. Test `Commands.Ports.App`: use `Application.compile_env` and `DokkuRemote.AppCommand.Mock`; write tests.
-- [ ] 8. Ask the user for feedback on the state of the implementation and carry out any requested corrections.
-- [ ] 9. Mark the plan as "done".
+- [x] 8. Ask the user for feedback on the state of the implementation and carry out any requested corrections.
+- [x] 9. Mark the plan as "done".
 
 ## Principal Files
 
