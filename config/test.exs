@@ -1,3 +1,5 @@
 import Config
 
-config :dokku_remote, DokkuRemote.System, DokkuRemote.System.Mock
+config :dokku_remote,
+  System: DokkuRemote.System.Mock,
+  "DokkuRemote.AppCommand": DokkuRemote.AppCommand.Mock

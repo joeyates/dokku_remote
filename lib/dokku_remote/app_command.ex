@@ -3,11 +3,14 @@ defmodule DokkuRemote.AppCommand do
   @enforce_keys @required_keys
   defstruct @required_keys ++ [verbose: false]
 
-  @system_impl Application.compile_env(:dokku_remote, DokkuRemote.System, System)
+  @system_impl Application.compile_env(:dokku_remote, :System, System)
 
   def new(opts) do
     struct!(__MODULE__, opts)
   end
+
+  @callback run(app :: %__MODULE__{}, command :: String.t()) ::
+              {:ok, String.t()} | {:error, String.t(), non_neg_integer()}
 
   def run(%__MODULE__{} = app, command) do
     into =
