@@ -1,0 +1,1 @@
+This directory contains sequentially named plan files, used by agents.
