@@ -15,7 +15,7 @@ Note: `apps:create` is already implemented in `DokkuRemote.Commands.Apps.App` an
 ## Tasks
 
 - [x] 1. Implement `DokkuRemote.Commands.DockerOptions.App` with `add/3` (`docker-options:add APP PHASE OPTION`); write tests.
-- [ ] 2. Implement `DokkuRemote.Commands.Git.App` with `from_image/2` (`git:from-image APP IMAGE`); write tests.
+- [x] 2. Implement `DokkuRemote.Commands.Git.App` with `from_image/2` (`git:from-image APP IMAGE`); write tests.
 - [ ] 3. Implement `DokkuRemote.Commands.Logs.App` with `get/1` (and optional opts such as `n:`, `tail:`, `process_type:`); write tests.
 - [ ] 4. Implement `DokkuRemote.Commands.Network.App` with `report/1` and `set/3` (`network:report APP`, `network:set APP PROPERTY VALUE`); write tests.
 - [ ] 5. Implement `DokkuRemote.Commands.Proxy.App` with `disable/1` (`proxy:disable APP`); write tests.
