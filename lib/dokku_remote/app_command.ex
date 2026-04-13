@@ -3,6 +3,8 @@ defmodule DokkuRemote.AppCommand do
   @enforce_keys @required_keys
   defstruct @required_keys ++ [verbose: false]
 
+  @system_impl Application.compile_env(:dokku_remote, DokkuRemote.System, System)
+
   def new(opts) do
     struct!(__MODULE__, opts)
   end
@@ -21,7 +23,7 @@ defmodule DokkuRemote.AppCommand do
       IO.puts("Running command: #{full_command}")
     end
 
-    case System.shell(full_command, into: into) do
+    case @system_impl.shell(full_command, into: into) do
       {output, 0} ->
         {:ok, output}
 
