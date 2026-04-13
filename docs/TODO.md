@@ -1,6 +1,6 @@
 # Add Tests
 
-Status: [ ]
+Status: [x]
 
 ## Description
 
