@@ -1,5 +1,6 @@
 %{
   "collectable_streamer": {:hex, :collectable_streamer, "0.2.1", "6e16530a40525aa065b8c94bfc72a2a22c2d171c88a608b5dddffe4f8b646851", [:mix], [], "hexpm", "a5f9ad2c09f7048cc3317406df43a8d5c6de2cf42d893747dee897b859abb28e"},
+  "green": {:hex, :green, "0.1.11", "9abf92ffca70a85756c5787dfc475cce1d85d062e1df166facbd8d34de087a93", [:mix], [], "hexpm", "945435d107a5dfe6c164d8470225d4edc2998bebc1a0bec2e614786ee1b4d198"},
   "mox": {:hex, :mox, "1.2.0", "a2cd96b4b80a3883e3100a221e8adc1b98e4c3a332a8fc434c39526babafd5b3", [:mix], [{:nimble_ownership, "~> 1.0", [hex: :nimble_ownership, repo: "hexpm", optional: false]}], "hexpm", "c7b92b3cc69ee24a7eeeaf944cd7be22013c52fcb580c1f33f50845ec821089a"},
   "nimble_ownership": {:hex, :nimble_ownership, "1.0.2", "fa8a6f2d8c592ad4d79b2ca617473c6aefd5869abfa02563a77682038bf916cf", [:mix], [], "hexpm", "098af64e1f6f8609c6672127cfe9e9590a5d3fcdd82bc17a377b8692fd81a879"},
 }

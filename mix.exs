@@ -1,7 +1,7 @@
 defmodule DokkuRemote.MixProject do
   use Mix.Project
 
-  def project do
+  def project() do
     [
       app: :dokku_remote,
       version: "0.1.0",
@@ -16,15 +16,16 @@ defmodule DokkuRemote.MixProject do
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
 
-  def application do
+  def application() do
     [
       extra_applications: [:logger]
     ]
   end
 
-  defp deps do
+  defp deps() do
     [
       {:collectable_streamer, "~> 0.2.1"},
+      {:green, "~> 0.1.11", only: :dev},
       {:mox, "~> 1.0", only: :test}
     ]
   end
