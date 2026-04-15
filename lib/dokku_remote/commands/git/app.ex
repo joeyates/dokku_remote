@@ -1,13 +1,13 @@
 defmodule DokkuRemote.Commands.Git.App do
-  alias DokkuRemote.AppCommand
+  alias DokkuRemote.App
 
   @app_command_impl Application.compile_env(
                       :dokku_remote,
-                      :"DokkuRemote.AppCommand",
-                      DokkuRemote.AppCommand
+                      :"DokkuRemote.Dokku.Command.App",
+                      DokkuRemote.Dokku.Command.App
                     )
 
-  def from_image(%AppCommand{} = app, image) do
+  def from_image(%App{} = app, image) do
     case @app_command_impl.run(app, "git:from-image", [app.dokku_app, image]) do
       {:ok, _output} -> :ok
       {:error, output, exit} -> {:error, output, exit}

@@ -1,5 +1,5 @@
 defmodule DokkuRemote.Commands.Enter do
-  alias DokkuRemote.AppCommand
+  alias DokkuRemote.App
 
   # NOTE: The `enter` Dokku command allocates an interactive pseudo-TTY. The
   # the underlying `AppCommand.run/3` collects output and waits for process exit,
@@ -10,11 +10,11 @@ defmodule DokkuRemote.Commands.Enter do
 
   @app_command_impl Application.compile_env(
                       :dokku_remote,
-                      :"DokkuRemote.AppCommand",
-                      DokkuRemote.AppCommand
+                      :"DokkuRemote.Dokku.Command.App",
+                      DokkuRemote.Dokku.Command.App
                     )
 
-  def run(%AppCommand{} = app) do
+  def run(%App{} = app) do
     case @app_command_impl.run(app, "enter", [app.dokku_app]) do
       {:ok, _output} -> :ok
       {:error, output, exit} -> {:error, output, exit}

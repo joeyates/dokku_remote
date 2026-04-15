@@ -1,13 +1,13 @@
 defmodule DokkuRemote.Commands.Domains.App do
-  alias DokkuRemote.AppCommand
+  alias DokkuRemote.App
 
   @app_command_impl Application.compile_env(
                       :dokku_remote,
-                      :"DokkuRemote.AppCommand",
-                      DokkuRemote.AppCommand
+                      :"DokkuRemote.Dokku.Command.App",
+                      DokkuRemote.Dokku.Command.App
                     )
 
-  def get(%AppCommand{} = app) do
+  def get(%App{} = app) do
     with {:ok, output} <- @app_command_impl.run(app, "domains:report", [app.dokku_app]),
          true <- String.match?(output, ~r/Domains app enabled:\s+true/),
          [domain] <-
@@ -22,7 +22,7 @@ defmodule DokkuRemote.Commands.Domains.App do
     end
   end
 
-  def set(%AppCommand{} = app, domain) do
+  def set(%App{} = app, domain) do
     case @app_command_impl.run(app, "domains:set", [app.dokku_app, domain]) do
       {:ok, _output} -> :ok
       {:error, output, exit} -> {:error, output, exit}

@@ -3,16 +3,15 @@ defmodule DokkuRemote.Commands.Proxy.AppTest do
 
   import Mox
 
-  alias DokkuRemote.AppCommand
   alias DokkuRemote.Commands.Proxy.App
 
   setup :verify_on_exit!
 
-  defp app(), do: AppCommand.new(dokku_app: "my-app", dokku_host: "dokku.example.com")
+  defp app(), do: DokkuRemote.App.new(dokku_app: "my-app", dokku_host: "dokku.example.com")
 
   describe "enabled?/1" do
     test "returns {:ok, true} when proxy is enabled" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "proxy:report", ["my-app"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "proxy:report", ["my-app"] ->
         {:ok, "=====> my-app proxy information\n  Proxy enabled:                 true\n"}
       end)
 
@@ -20,7 +19,7 @@ defmodule DokkuRemote.Commands.Proxy.AppTest do
     end
 
     test "returns {:ok, false} when proxy is disabled" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "proxy:report", ["my-app"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "proxy:report", ["my-app"] ->
         {:ok, "=====> my-app proxy information\n  Proxy enabled:                 false\n"}
       end)
 
@@ -28,7 +27,7 @@ defmodule DokkuRemote.Commands.Proxy.AppTest do
     end
 
     test "returns {:error, message, -1} on unexpected output" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "proxy:report", ["my-app"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "proxy:report", ["my-app"] ->
         {:ok, "some unexpected output"}
       end)
 
@@ -36,7 +35,7 @@ defmodule DokkuRemote.Commands.Proxy.AppTest do
     end
 
     test "returns {:error, output, exit_code} on command failure" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "proxy:report", ["my-app"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "proxy:report", ["my-app"] ->
         {:error, "App my-app does not exist", 1}
       end)
 
@@ -46,7 +45,7 @@ defmodule DokkuRemote.Commands.Proxy.AppTest do
 
   describe "disable/1" do
     test "returns :ok on success" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "proxy:disable", ["my-app"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "proxy:disable", ["my-app"] ->
         {:ok, ""}
       end)
 
@@ -54,7 +53,7 @@ defmodule DokkuRemote.Commands.Proxy.AppTest do
     end
 
     test "returns {:error, output, exit_code} on failure" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "proxy:disable", ["my-app"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "proxy:disable", ["my-app"] ->
         {:error, "App my-app does not exist", 1}
       end)
 

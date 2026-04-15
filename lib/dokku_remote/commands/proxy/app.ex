@@ -1,13 +1,13 @@
 defmodule DokkuRemote.Commands.Proxy.App do
-  alias DokkuRemote.AppCommand
+  alias DokkuRemote.App
 
   @app_command_impl Application.compile_env(
                       :dokku_remote,
-                      :"DokkuRemote.AppCommand",
-                      DokkuRemote.AppCommand
+                      :"DokkuRemote.Dokku.Command.App",
+                      DokkuRemote.Dokku.Command.App
                     )
 
-  def enabled?(%AppCommand{} = app) do
+  def enabled?(%App{} = app) do
     case @app_command_impl.run(app, "proxy:report", [app.dokku_app]) do
       {:ok, output} ->
         cond do
@@ -21,7 +21,7 @@ defmodule DokkuRemote.Commands.Proxy.App do
     end
   end
 
-  def disable(%AppCommand{} = app) do
+  def disable(%App{} = app) do
     case @app_command_impl.run(app, "proxy:disable", [app.dokku_app]) do
       {:ok, _output} -> :ok
       {:error, output, exit} -> {:error, output, exit}

@@ -1,13 +1,13 @@
 defmodule DokkuRemote.Commands.Apps.App do
-  alias DokkuRemote.AppCommand
+  alias DokkuRemote.App
 
   @app_command_impl Application.compile_env(
                       :dokku_remote,
-                      :"DokkuRemote.AppCommand",
-                      DokkuRemote.AppCommand
+                      :"DokkuRemote.Dokku.Command.App",
+                      DokkuRemote.Dokku.Command.App
                     )
 
-  def exists?(%AppCommand{} = app) do
+  def exists?(%App{} = app) do
     case @app_command_impl.run(app, "apps:exists", [app.dokku_app]) do
       {:ok, _output} -> true
       {:error, _output, 20} -> false
@@ -15,7 +15,7 @@ defmodule DokkuRemote.Commands.Apps.App do
     end
   end
 
-  def running?(%AppCommand{} = app) do
+  def running?(%App{} = app) do
     with {:ok, output} <- @app_command_impl.run(app, "ps:report", [app.dokku_app]),
          [status] <- Regex.run(~r/Running:\s+(\w+)/, output, capture: :all_but_first) do
       status == "true"
@@ -25,7 +25,7 @@ defmodule DokkuRemote.Commands.Apps.App do
     end
   end
 
-  def create(%AppCommand{} = app) do
+  def create(%App{} = app) do
     case @app_command_impl.run(app, "apps:create", [app.dokku_app]) do
       {:ok, _output} -> :ok
       {:error, output, exit} -> {:error, output, exit}

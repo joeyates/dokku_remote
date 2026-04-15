@@ -1,13 +1,13 @@
 defmodule DokkuRemote.Commands.Logs.App do
-  alias DokkuRemote.AppCommand
+  alias DokkuRemote.App
 
   @app_command_impl Application.compile_env(
                       :dokku_remote,
-                      :"DokkuRemote.AppCommand",
-                      DokkuRemote.AppCommand
+                      :"DokkuRemote.Dokku.Command.App",
+                      DokkuRemote.Dokku.Command.App
                     )
 
-  def get(%AppCommand{} = app, opts \\ []) do
+  def get(%App{} = app, opts \\ []) do
     flags =
       []
       |> maybe_add_flag(opts[:n], fn n -> ["--num", to_string(n)] end)

@@ -1,13 +1,13 @@
 defmodule DokkuRemote.Commands.DockerOptions.App do
-  alias DokkuRemote.AppCommand
+  alias DokkuRemote.App
 
   @app_command_impl Application.compile_env(
                       :dokku_remote,
-                      :"DokkuRemote.AppCommand",
-                      DokkuRemote.AppCommand
+                      :"DokkuRemote.Dokku.Command.App",
+                      DokkuRemote.Dokku.Command.App
                     )
 
-  def exists?(%AppCommand{} = app, phase, option) do
+  def exists?(%App{} = app, phase, option) do
     case @app_command_impl.run(app, "docker-options:report", [app.dokku_app]) do
       {:ok, output} ->
         if has_option?(output, phase, option) do
@@ -34,7 +34,7 @@ defmodule DokkuRemote.Commands.DockerOptions.App do
     end)
   end
 
-  def add(%AppCommand{} = app, phase, option) do
+  def add(%App{} = app, phase, option) do
     case @app_command_impl.run(app, "docker-options:add", [app.dokku_app, phase, option]) do
       {:ok, _output} -> :ok
       {:error, output, exit} -> {:error, output, exit}

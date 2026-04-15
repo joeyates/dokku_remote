@@ -3,19 +3,18 @@ defmodule DokkuRemote.Commands.Ports.AppTest do
 
   import Mox
 
-  alias DokkuRemote.AppCommand
   alias DokkuRemote.Commands.Ports.App
 
   setup :verify_on_exit!
 
-  defp app(), do: AppCommand.new(dokku_app: "my-app", dokku_host: "dokku.example.com")
+  defp app(), do: DokkuRemote.App.new(dokku_app: "my-app", dokku_host: "dokku.example.com")
 
   describe "get_prococol_mapping/2" do
     test "returns {:ok, host_port, container_port} on success" do
       output =
         "=====> Port mappings for my-app\n-----> scheme  host_port  container_port\n       http   80   3000\n"
 
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "ports:list", ["my-app"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "ports:list", ["my-app"] ->
         {:ok, output}
       end)
 
@@ -25,7 +24,7 @@ defmodule DokkuRemote.Commands.Ports.AppTest do
     test "returns {:error, :not_set} when no mapping exists for the protocol" do
       output = "=====> Port mappings for my-app\n"
 
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "ports:list", ["my-app"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "ports:list", ["my-app"] ->
         {:ok, output}
       end)
 
@@ -33,7 +32,7 @@ defmodule DokkuRemote.Commands.Ports.AppTest do
     end
 
     test "returns {:error, output, exit_code} on command failure" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "ports:list", ["my-app"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "ports:list", ["my-app"] ->
         {:error, "App my-app does not exist", 1}
       end)
 
@@ -43,9 +42,9 @@ defmodule DokkuRemote.Commands.Ports.AppTest do
 
   describe "set_protocol_mapping/3" do
     test "runs ports:set for http:80 and returns :ok" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app,
-                                                   "ports:set",
-                                                   ["my-app", "http:80:3000"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
+                                                          "ports:set",
+                                                          ["my-app", "http:80:3000"] ->
         {:ok, ""}
       end)
 
@@ -53,7 +52,7 @@ defmodule DokkuRemote.Commands.Ports.AppTest do
     end
 
     test "returns error tuple on failure" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, _cmd, _params ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, _cmd, _params ->
         {:error, "connection refused", 1}
       end)
 

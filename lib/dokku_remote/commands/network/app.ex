@@ -1,17 +1,17 @@
 defmodule DokkuRemote.Commands.Network.App do
-  alias DokkuRemote.AppCommand
+  alias DokkuRemote.App
 
   @app_command_impl Application.compile_env(
                       :dokku_remote,
-                      :"DokkuRemote.AppCommand",
-                      DokkuRemote.AppCommand
+                      :"DokkuRemote.Dokku.Command.App",
+                      DokkuRemote.Dokku.Command.App
                     )
 
-  def report(%AppCommand{} = app) do
+  def report(%App{} = app) do
     @app_command_impl.run(app, "network:report", [app.dokku_app])
   end
 
-  def get(%AppCommand{} = app, network, property) do
+  def get(%App{} = app, network, property) do
     case @app_command_impl.run(
            app,
            "network:report",
@@ -26,7 +26,7 @@ defmodule DokkuRemote.Commands.Network.App do
     end
   end
 
-  def set(%AppCommand{} = app, property, value) do
+  def set(%App{} = app, property, value) do
     case @app_command_impl.run(app, "network:set", [app.dokku_app, property, value]) do
       {:ok, _output} -> :ok
       {:error, output, exit} -> {:error, output, exit}
