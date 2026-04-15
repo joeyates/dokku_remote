@@ -19,7 +19,7 @@ defmodule DokkuRemote.Commands.DockerOptions.AppTest do
           Docker options build:
       """
 
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "docker-options:report my-app" ->
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "docker-options:report", ["my-app"] ->
         {:ok, output}
       end)
 
@@ -34,7 +34,7 @@ defmodule DokkuRemote.Commands.DockerOptions.AppTest do
           Docker options build:
       """
 
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "docker-options:report my-app" ->
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "docker-options:report", ["my-app"] ->
         {:ok, output}
       end)
 
@@ -42,7 +42,7 @@ defmodule DokkuRemote.Commands.DockerOptions.AppTest do
     end
 
     test "returns {:error, output, exit_code} on command failure" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "docker-options:report my-app" ->
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "docker-options:report", ["my-app"] ->
         {:error, "App my-app does not exist", 1}
       end)
 
@@ -54,7 +54,8 @@ defmodule DokkuRemote.Commands.DockerOptions.AppTest do
   describe "add/3" do
     test "returns :ok on success" do
       expect(DokkuRemote.AppCommand.Mock, :run, fn _app,
-                                                   "docker-options:add my-app deploy --restart=always" ->
+                                                   "docker-options:add",
+                                                   ["my-app", "deploy", "--restart=always"] ->
         {:ok, ""}
       end)
 
@@ -63,7 +64,8 @@ defmodule DokkuRemote.Commands.DockerOptions.AppTest do
 
     test "returns {:error, output, exit_code} on failure" do
       expect(DokkuRemote.AppCommand.Mock, :run, fn _app,
-                                                   "docker-options:add my-app run --cap-add=NET_ADMIN" ->
+                                                   "docker-options:add",
+                                                   ["my-app", "run", "--cap-add=NET_ADMIN"] ->
         {:error, "App my-app does not exist", 1}
       end)
 

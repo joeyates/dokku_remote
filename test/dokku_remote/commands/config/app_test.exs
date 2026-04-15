@@ -13,7 +13,8 @@ defmodule DokkuRemote.Commands.Config.AppTest do
   describe "set/4" do
     test "runs config:set with --no-restart by default" do
       expect(DokkuRemote.AppCommand.Mock, :run, fn _app,
-                                                   "config:set --no-restart  my-app FOO=bar" ->
+                                                   "config:set",
+                                                   ["--no-restart", "my-app", "FOO=bar"] ->
         {:ok, ""}
       end)
 
@@ -21,7 +22,7 @@ defmodule DokkuRemote.Commands.Config.AppTest do
     end
 
     test "runs config:set without --no-restart when restart: true" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "config:set  my-app FOO=bar" ->
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "config:set", ["my-app", "FOO=bar"] ->
         {:ok, ""}
       end)
 
@@ -29,7 +30,7 @@ defmodule DokkuRemote.Commands.Config.AppTest do
     end
 
     test "returns error tuple on failure" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, _cmd ->
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, _cmd, _params ->
         {:error, "connection refused", 1}
       end)
 
@@ -40,7 +41,8 @@ defmodule DokkuRemote.Commands.Config.AppTest do
   describe "unset/3" do
     test "runs config:unset with --no-restart by default" do
       expect(DokkuRemote.AppCommand.Mock, :run, fn _app,
-                                                   "config:unset --no-restart  my-app FOO" ->
+                                                   "config:unset",
+                                                   ["--no-restart", "my-app", "FOO"] ->
         {:ok, ""}
       end)
 
@@ -48,7 +50,7 @@ defmodule DokkuRemote.Commands.Config.AppTest do
     end
 
     test "runs config:unset without --no-restart when restart: true" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "config:unset  my-app FOO" ->
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "config:unset", ["my-app", "FOO"] ->
         {:ok, ""}
       end)
 
@@ -56,7 +58,7 @@ defmodule DokkuRemote.Commands.Config.AppTest do
     end
 
     test "returns error tuple on failure" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, _cmd ->
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, _cmd, _params ->
         {:error, "connection refused", 1}
       end)
 

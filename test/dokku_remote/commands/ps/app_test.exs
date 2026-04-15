@@ -12,13 +12,15 @@ defmodule DokkuRemote.Commands.Ps.AppTest do
 
   describe "rebuild/1" do
     test "returns :ok on success" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "ps:rebuild my-app" -> {:ok, ""} end)
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "ps:rebuild", ["my-app"] ->
+        {:ok, ""}
+      end)
 
       assert App.rebuild(app()) == :ok
     end
 
     test "returns {:error, output, exit_code} on failure" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "ps:rebuild my-app" ->
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "ps:rebuild", ["my-app"] ->
         {:error, "App my-app does not exist", 1}
       end)
 
@@ -28,7 +30,7 @@ defmodule DokkuRemote.Commands.Ps.AppTest do
 
   describe "report/1" do
     test "returns {:ok, output} on success" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "ps:report my-app" ->
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "ps:report", ["my-app"] ->
         {:ok, "=====> my-app ps information\n  Running:           true\n"}
       end)
 
@@ -37,7 +39,7 @@ defmodule DokkuRemote.Commands.Ps.AppTest do
     end
 
     test "returns {:error, output, exit_code} on failure" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "ps:report my-app" ->
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "ps:report", ["my-app"] ->
         {:error, "App my-app does not exist", 1}
       end)
 
@@ -47,13 +49,15 @@ defmodule DokkuRemote.Commands.Ps.AppTest do
 
   describe "restart/1" do
     test "returns :ok on success" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "ps:restart my-app" -> {:ok, ""} end)
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "ps:restart", ["my-app"] ->
+        {:ok, ""}
+      end)
 
       assert App.restart(app()) == :ok
     end
 
     test "returns {:error, output, exit_code} on failure" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "ps:restart my-app" ->
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "ps:restart", ["my-app"] ->
         {:error, "App my-app does not exist", 1}
       end)
 
@@ -63,13 +67,15 @@ defmodule DokkuRemote.Commands.Ps.AppTest do
 
   describe "stop/1" do
     test "returns :ok on success" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "ps:stop my-app" -> {:ok, ""} end)
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "ps:stop", ["my-app"] ->
+        {:ok, ""}
+      end)
 
       assert App.stop(app()) == :ok
     end
 
     test "returns {:error, output, exit_code} on failure" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "ps:stop my-app" ->
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "ps:stop", ["my-app"] ->
         {:error, "App my-app does not exist", 1}
       end)
 
