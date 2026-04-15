@@ -10,7 +10,8 @@ defmodule DokkuRemote.Commands.Domains.App do
   def get(%AppCommand{} = app) do
     with {:ok, output} <- @app_command_impl.run(app, "domains:report #{app.dokku_app}"),
          true <- String.match?(output, ~r/Domains app enabled:\s+true/),
-         [domain] <- Regex.run(~r<Domains app vhosts:\s+(.*)>, output, capture: :all_but_first) do
+         [domain] <-
+           Regex.run(~r<Domains app vhosts:\s+([\w\.-]*)>, output, capture: :all_but_first) do
       {:ok, domain}
     else
       {:error, output, exit} ->
