@@ -18,11 +18,11 @@ defmodule DokkuRemote.Root.CopyTest do
       Copy.to_host("dokku.example.com", "local/path/file.txt", "/remote/path/file.txt")
     end
 
-    test "returns {:ok, output} on success" do
+    test "returns :ok on success" do
       expect(DokkuRemote.System.Mock, :cmd, fn _prog, _args, _opts -> {"", 0} end)
 
       assert Copy.to_host("dokku.example.com", "local/file.txt", "/remote/file.txt") ==
-               {:ok, ""}
+               :ok
     end
 
     test "returns {:error, output, exit_code} on failure" do

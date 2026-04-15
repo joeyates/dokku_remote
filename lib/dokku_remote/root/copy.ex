@@ -5,8 +5,8 @@ defmodule DokkuRemote.Root.Copy do
     args = [local_path, "root@#{dokku_host}:#{remote_path}"]
 
     case @system_impl.cmd("scp", args, stderr_to_stdout: true) do
-      {output, 0} ->
-        {:ok, output}
+      {_output, 0} ->
+        :ok
 
       {output, exit} ->
         {:error, output, exit}
