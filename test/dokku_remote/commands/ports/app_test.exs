@@ -10,13 +10,13 @@ defmodule DokkuRemote.Commands.Ports.AppTest do
 
   defp app(), do: AppCommand.new(dokku_app: "my-app", dokku_host: "dokku.example.com")
 
-  describe "set_80/2" do
+  describe "set_protocol_mapping/3" do
     test "runs ports:set for http:80 and returns :ok" do
       expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "ports:set my-app http:80:3000" ->
         {:ok, ""}
       end)
 
-      assert App.set_80(app(), 3000) == :ok
+      assert App.set_protocol_mapping(app(), "http", 3000) == :ok
     end
 
     test "returns error tuple on failure" do
@@ -24,7 +24,7 @@ defmodule DokkuRemote.Commands.Ports.AppTest do
         {:error, "connection refused", 1}
       end)
 
-      assert App.set_80(app(), 3000) == {:error, "connection refused", 1}
+      assert App.set_protocol_mapping(app(), "http", 3000) == {:error, "connection refused", 1}
     end
   end
 end
