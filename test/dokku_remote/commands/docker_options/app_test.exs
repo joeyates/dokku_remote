@@ -15,8 +15,8 @@ defmodule DokkuRemote.Commands.DockerOptions.AppTest do
       output = """
       =====> my-app docker options
           Docker options deploy:  --restart=always
-          Docker options run:  
-          Docker options build:  
+          Docker options run:
+          Docker options build:
       """
 
       expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "docker-options:report my-app" ->
@@ -30,8 +30,8 @@ defmodule DokkuRemote.Commands.DockerOptions.AppTest do
       output = """
       =====> my-app docker options
           Docker options deploy:  --restart=always
-          Docker options run:  
-          Docker options build:  
+          Docker options run:
+          Docker options build:
       """
 
       expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "docker-options:report my-app" ->
