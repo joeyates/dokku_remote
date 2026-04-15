@@ -7,8 +7,8 @@ defmodule DokkuRemote.Commands.Storage.App do
                       DokkuRemote.Dokku.Command.App
                     )
 
-  def ensure_directory(%App{} = app, dir) do
-    case @app_command_impl.run(app, "storage:ensure-directory", [app.dokku_app, dir]) do
+  def ensure_directory(%App{} = app) do
+    case @app_command_impl.run(app, "storage:ensure-directory", [app.dokku_app]) do
       {:ok, _output} -> :ok
       {:error, output, exit} -> {:error, output, exit}
     end

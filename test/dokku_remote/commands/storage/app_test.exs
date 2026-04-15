@@ -42,25 +42,25 @@ defmodule DokkuRemote.Commands.Storage.AppTest do
     end
   end
 
-  describe "ensure_directory/2" do
+  describe "ensure_directory/1" do
     test "returns :ok on success" do
       expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
                                                           "storage:ensure-directory",
-                                                          ["my-app", "/var/data"] ->
+                                                          ["my-app"] ->
         {:ok, ""}
       end)
 
-      assert App.ensure_directory(app(), "/var/data") == :ok
+      assert App.ensure_directory(app()) == :ok
     end
 
     test "returns {:error, output, exit_code} on failure" do
       expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
                                                           "storage:ensure-directory",
-                                                          ["my-app", "/var/data"] ->
+                                                          ["my-app"] ->
         {:error, "App my-app does not exist", 1}
       end)
 
-      assert App.ensure_directory(app(), "/var/data") == {:error, "App my-app does not exist", 1}
+      assert App.ensure_directory(app()) == {:error, "App my-app does not exist", 1}
     end
   end
 
