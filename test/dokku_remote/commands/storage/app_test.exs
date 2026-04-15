@@ -10,6 +10,36 @@ defmodule DokkuRemote.Commands.Storage.AppTest do
 
   defp app(), do: AppCommand.new(dokku_app: "my-app", dokku_host: "dokku.example.com")
 
+  describe "mount_exists?/3" do
+    test "returns {:ok, true} when the mount is present" do
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app,
+                                                   "storage:report my-app --storage-run-mounts" ->
+        {:ok, "/var/data:/app/data\n"}
+      end)
+
+      assert App.mount_exists?(app(), "/var/data", "/app/data") == {:ok, true}
+    end
+
+    test "returns {:ok, false} when the mount is absent" do
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app,
+                                                   "storage:report my-app --storage-run-mounts" ->
+        {:ok, "/other/path:/other/container\n"}
+      end)
+
+      assert App.mount_exists?(app(), "/var/data", "/app/data") == {:ok, false}
+    end
+
+    test "returns {:error, output, exit_code} on command failure" do
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app,
+                                                   "storage:report my-app --storage-run-mounts" ->
+        {:error, "App my-app does not exist", 1}
+      end)
+
+      assert App.mount_exists?(app(), "/var/data", "/app/data") ==
+               {:error, "App my-app does not exist", 1}
+    end
+  end
+
   describe "ensure_directory/2" do
     test "returns :ok on success" do
       expect(DokkuRemote.AppCommand.Mock, :run, fn _app,

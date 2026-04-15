@@ -1,6 +1,7 @@
 defmodule DokkuRemote.AppCommandTest do
   use ExUnit.Case, async: true
 
+  import ExUnit.CaptureIO
   import Mox
 
   alias DokkuRemote.AppCommand
@@ -47,6 +48,21 @@ defmodule DokkuRemote.AppCommandTest do
       expect(DokkuRemote.System.Mock, :shell, fn _cmd, _opts -> {"error output", 1} end)
 
       assert {:error, "error output", 1} = AppCommand.run(app, "apps:list")
+    end
+  end
+
+  describe "run/2 with verbose: true" do
+    test "prints the command before running" do
+      app = AppCommand.new(dokku_app: "my-app", dokku_host: "dokku.example.com", verbose: true)
+
+      expect(DokkuRemote.System.Mock, :shell, fn _cmd, _opts -> {"", 0} end)
+
+      output =
+        capture_io(fn ->
+          AppCommand.run(app, "apps:list")
+        end)
+
+      assert output =~ "ssh dokku@dokku.example.com apps:list 2>&1"
     end
   end
 end

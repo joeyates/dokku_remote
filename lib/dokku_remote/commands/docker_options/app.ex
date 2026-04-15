@@ -24,7 +24,7 @@ defmodule DokkuRemote.Commands.DockerOptions.App do
   defp has_option?(output, phase, option) do
     output
     |> String.split("\n")
-    |> Enum.find_value("", fn line ->
+    |> Enum.find_value(false, fn line ->
       if String.contains?(line, "Docker options #{phase}:") do
         line
         |> String.replace("Docker options #{phase}:", "")

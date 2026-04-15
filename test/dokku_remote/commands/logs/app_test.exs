@@ -51,6 +51,14 @@ defmodule DokkuRemote.Commands.Logs.AppTest do
       assert App.get(app(), n: 10, process_type: "web") == {:ok, "web log\n"}
     end
 
+    test "does not pass --tail flag when tail: false is given" do
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "logs my-app" ->
+        {:ok, ""}
+      end)
+
+      assert App.get(app(), tail: false) == {:ok, ""}
+    end
+
     test "returns {:error, output, exit_code} on failure" do
       expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "logs my-app" ->
         {:error, "App my-app does not exist", 1}
