@@ -10,6 +10,27 @@ defmodule DokkuRemote.Commands.Network.AppTest do
 
   defp app(), do: AppCommand.new(dokku_app: "my-app", dokku_host: "dokku.example.com")
 
+  describe "get/3" do
+    test "returns {:ok, trimmed_value} on success" do
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app,
+                                                   "network:report my-app mynet --network-attach-post-create" ->
+        {:ok, "mynet\n"}
+      end)
+
+      assert App.get(app(), "mynet", "attach-post-create") == {:ok, "mynet"}
+    end
+
+    test "returns {:error, output, exit_code} on failure" do
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app,
+                                                   "network:report my-app mynet --network-attach-post-create" ->
+        {:error, "App my-app does not exist", 1}
+      end)
+
+      assert App.get(app(), "mynet", "attach-post-create") ==
+               {:error, "App my-app does not exist", 1}
+    end
+  end
+
   describe "report/1" do
     test "returns {:ok, output} on success" do
       expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "network:report my-app" ->
