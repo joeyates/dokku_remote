@@ -12,11 +12,11 @@ defmodule DokkuRemote.CommandTest do
     test "builds the correct SSH program and args" do
       expect(DokkuRemote.System.Mock, :cmd, fn program, args, _opts ->
         assert program == "ssh"
-        assert args == ["dokku@dokku.example.com", "version"]
-        {"dokku version 0.30.0", 0}
+        assert args == ["dokku@dokku.example.com", "some-command", "--option", "value"]
+        {"output", 0}
       end)
 
-      Command.run("dokku.example.com", "version")
+      Command.run("dokku.example.com", "some-command", ["--option", "value"])
     end
 
     test "returns {:ok, output} on success" do
@@ -38,7 +38,7 @@ defmodule DokkuRemote.CommandTest do
 
       output =
         capture_io(fn ->
-          Command.run("dokku.example.com", "version", verbose: true)
+          Command.run("dokku.example.com", "version", [], verbose: true)
         end)
 
       assert output =~ "ssh dokku@dokku.example.com version"

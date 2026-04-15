@@ -3,8 +3,17 @@ defmodule DokkuRemote.Command do
 
   @callback run(dokku_host :: String.t(), command :: String.t()) ::
               {:ok, String.t()} | {:error, String.t(), non_neg_integer()}
+  @callback run(dokku_host :: String.t(), command :: String.t(), params :: [String.t()]) ::
+              {:ok, String.t()} | {:error, String.t(), non_neg_integer()}
+  @callback run(
+              dokku_host :: String.t(),
+              command :: String.t(),
+              params :: [String.t()],
+              opts :: Keyword.t()
+            ) ::
+              {:ok, String.t()} | {:error, String.t(), non_neg_integer()}
 
-  def run(dokku_host, command, opts \\ []) do
+  def run(dokku_host, command, params \\ [], opts \\ []) do
     verbose = Keyword.get(opts, :verbose, false)
 
     into =
@@ -14,7 +23,7 @@ defmodule DokkuRemote.Command do
         ""
       end
 
-    args = ["dokku@#{dokku_host}" | String.split(command)]
+    args = ["dokku@#{dokku_host}" | [command | params]]
 
     if verbose do
       IO.puts("Running command: ssh #{Enum.join(args, " ")}")
