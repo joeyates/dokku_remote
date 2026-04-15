@@ -1,4 +1,4 @@
-defmodule DokkuRemote.RootCommand do
+defmodule DokkuRemote.Root.Command do
   @system_impl Application.compile_env(:dokku_remote, :System, System)
 
   @callback run(dokku_host :: String.t(), command :: String.t()) ::

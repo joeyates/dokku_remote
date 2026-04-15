@@ -1,10 +1,10 @@
-defmodule DokkuRemote.RootCommandTest do
+defmodule DokkuRemote.Root.CommandTest do
   use ExUnit.Case, async: true
 
   import ExUnit.CaptureIO
   import Mox
 
-  alias DokkuRemote.RootCommand
+  alias DokkuRemote.Root.Command
 
   setup :verify_on_exit!
 
@@ -16,19 +16,19 @@ defmodule DokkuRemote.RootCommandTest do
         {"output", 0}
       end)
 
-      RootCommand.run("dokku.example.com", "some-command")
+      Command.run("dokku.example.com", "some-command")
     end
 
     test "returns {:ok, output} on success" do
       expect(DokkuRemote.System.Mock, :cmd, fn _prog, _args, _opts -> {"ok output", 0} end)
 
-      assert RootCommand.run("dokku.example.com", "some-command") == {:ok, "ok output"}
+      assert Command.run("dokku.example.com", "some-command") == {:ok, "ok output"}
     end
 
     test "returns {:error, output, exit_code} on failure" do
       expect(DokkuRemote.System.Mock, :cmd, fn _prog, _args, _opts -> {"fail", 2} end)
 
-      assert RootCommand.run("dokku.example.com", "some-command") == {:error, "fail", 2}
+      assert Command.run("dokku.example.com", "some-command") == {:error, "fail", 2}
     end
   end
 
@@ -38,7 +38,7 @@ defmodule DokkuRemote.RootCommandTest do
 
       output =
         capture_io(fn ->
-          RootCommand.run("dokku.example.com", "some-command", verbose: true)
+          Command.run("dokku.example.com", "some-command", verbose: true)
         end)
 
       assert output =~ "ssh root@dokku.example.com some-command"
