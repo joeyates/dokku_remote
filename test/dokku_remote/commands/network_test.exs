@@ -9,7 +9,8 @@ defmodule DokkuRemote.Commands.NetworkTest do
 
   describe "create/2" do
     test "returns :ok on success" do
-      expect(DokkuRemote.Command.Mock, :run, fn "dokku.example.com", "network:create mynet" ->
+      expect(DokkuRemote.Dokku.Command.Mock, :run, fn "dokku.example.com",
+                                                      "network:create mynet" ->
         {:ok, ""}
       end)
 
@@ -17,7 +18,8 @@ defmodule DokkuRemote.Commands.NetworkTest do
     end
 
     test "returns {:error, output, exit_code} on failure" do
-      expect(DokkuRemote.Command.Mock, :run, fn "dokku.example.com", "network:create mynet" ->
+      expect(DokkuRemote.Dokku.Command.Mock, :run, fn "dokku.example.com",
+                                                      "network:create mynet" ->
         {:error, "network already exists", 1}
       end)
 
@@ -27,7 +29,8 @@ defmodule DokkuRemote.Commands.NetworkTest do
 
   describe "exists?/2" do
     test "returns {:ok, true} when the network exists" do
-      expect(DokkuRemote.Command.Mock, :run, fn "dokku.example.com", "network:exists mynet" ->
+      expect(DokkuRemote.Dokku.Command.Mock, :run, fn "dokku.example.com",
+                                                      "network:exists mynet" ->
         {:ok, "mynet exists"}
       end)
 
@@ -35,7 +38,8 @@ defmodule DokkuRemote.Commands.NetworkTest do
     end
 
     test "returns {:ok, false} when the network does not exist" do
-      expect(DokkuRemote.Command.Mock, :run, fn "dokku.example.com", "network:exists mynet" ->
+      expect(DokkuRemote.Dokku.Command.Mock, :run, fn "dokku.example.com",
+                                                      "network:exists mynet" ->
         {:ok, "mynet does not exist"}
       end)
 
@@ -43,7 +47,8 @@ defmodule DokkuRemote.Commands.NetworkTest do
     end
 
     test "returns {:error, output, exit_code} on command failure" do
-      expect(DokkuRemote.Command.Mock, :run, fn "dokku.example.com", "network:exists mynet" ->
+      expect(DokkuRemote.Dokku.Command.Mock, :run, fn "dokku.example.com",
+                                                      "network:exists mynet" ->
         {:error, "connection refused", 1}
       end)
 
@@ -51,7 +56,8 @@ defmodule DokkuRemote.Commands.NetworkTest do
     end
 
     test "returns {:error, message, -1} on unexpected output" do
-      expect(DokkuRemote.Command.Mock, :run, fn "dokku.example.com", "network:exists mynet" ->
+      expect(DokkuRemote.Dokku.Command.Mock, :run, fn "dokku.example.com",
+                                                      "network:exists mynet" ->
         {:ok, "some unexpected output"}
       end)
 

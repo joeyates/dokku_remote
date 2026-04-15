@@ -1,8 +1,8 @@
 defmodule DokkuRemote.Commands.Network do
   @command_impl Application.compile_env(
                   :dokku_remote,
-                  :"DokkuRemote.Command",
-                  DokkuRemote.Command
+                  :"DokkuRemote.Dokku.Command",
+                  DokkuRemote.Dokku.Command
                 )
 
   def create(dokku_host, network) do

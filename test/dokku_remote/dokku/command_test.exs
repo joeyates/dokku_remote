@@ -1,10 +1,10 @@
-defmodule DokkuRemote.CommandTest do
+defmodule DokkuRemote.Dokku.CommandTest do
   use ExUnit.Case, async: true
 
   import ExUnit.CaptureIO
   import Mox
 
-  alias DokkuRemote.Command
+  alias DokkuRemote.Dokku.Command
 
   setup :verify_on_exit!
 
