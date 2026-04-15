@@ -9,10 +9,10 @@ defmodule DokkuRemote.AppCommand do
     struct!(__MODULE__, opts)
   end
 
-  @callback run(app :: %__MODULE__{}, command :: String.t()) ::
+  @callback run(app :: %__MODULE__{}, command :: String.t(), params :: [String.t()]) ::
               {:ok, String.t()} | {:error, String.t(), non_neg_integer()}
 
-  def run(%__MODULE__{} = app, command) do
+  def run(%__MODULE__{} = app, command, params \\ []) do
     into =
       if app.verbose do
         CollectableStreamer.new(fn line -> IO.write(line) end)
@@ -20,13 +20,13 @@ defmodule DokkuRemote.AppCommand do
         ""
       end
 
-    full_command = "ssh dokku@#{app.dokku_host} #{command} 2>&1"
+    args = ["dokku@#{app.dokku_host}", command | params]
 
     if app.verbose do
-      IO.puts("Running command: #{full_command}")
+      IO.puts("Running command: ssh #{Enum.join(args, " ")}")
     end
 
-    case @system_impl.shell(full_command, into: into) do
+    case @system_impl.cmd("ssh", args, stderr_to_stdout: true, into: into) do
       {output, 0} ->
         {:ok, output}
 

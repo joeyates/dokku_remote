@@ -8,7 +8,7 @@ defmodule DokkuRemote.Commands.Apps.App do
                     )
 
   def exists?(%AppCommand{} = app) do
-    case @app_command_impl.run(app, "apps:exists #{app.dokku_app}") do
+    case @app_command_impl.run(app, "apps:exists", [app.dokku_app]) do
       {:ok, _output} -> true
       {:error, _output, 20} -> false
       {:error, output, exit} -> raise "Error checking if app exists, exit code #{exit}: #{output}"
@@ -16,7 +16,7 @@ defmodule DokkuRemote.Commands.Apps.App do
   end
 
   def running?(%AppCommand{} = app) do
-    with {:ok, output} <- @app_command_impl.run(app, "ps:report #{app.dokku_app}"),
+    with {:ok, output} <- @app_command_impl.run(app, "ps:report", [app.dokku_app]),
          [status] <- Regex.run(~r/Running:\s+(\w+)/, output, capture: :all_but_first) do
       status == "true"
     else
@@ -26,7 +26,7 @@ defmodule DokkuRemote.Commands.Apps.App do
   end
 
   def create(%AppCommand{} = app) do
-    case @app_command_impl.run(app, "apps:create #{app.dokku_app}") do
+    case @app_command_impl.run(app, "apps:create", [app.dokku_app]) do
       {:ok, _output} -> :ok
       {:error, output, exit} -> {:error, output, exit}
     end

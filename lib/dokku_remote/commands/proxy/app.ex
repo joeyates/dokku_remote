@@ -8,7 +8,7 @@ defmodule DokkuRemote.Commands.Proxy.App do
                     )
 
   def enabled?(%AppCommand{} = app) do
-    case @app_command_impl.run(app, "proxy:report #{app.dokku_app}") do
+    case @app_command_impl.run(app, "proxy:report", [app.dokku_app]) do
       {:ok, output} ->
         cond do
           String.match?(output, ~r/Proxy enabled:\s+true/) -> {:ok, true}
@@ -22,7 +22,7 @@ defmodule DokkuRemote.Commands.Proxy.App do
   end
 
   def disable(%AppCommand{} = app) do
-    case @app_command_impl.run(app, "proxy:disable #{app.dokku_app}") do
+    case @app_command_impl.run(app, "proxy:disable", [app.dokku_app]) do
       {:ok, _output} -> :ok
       {:error, output, exit} -> {:error, output, exit}
     end

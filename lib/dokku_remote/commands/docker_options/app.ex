@@ -8,7 +8,7 @@ defmodule DokkuRemote.Commands.DockerOptions.App do
                     )
 
   def exists?(%AppCommand{} = app, phase, option) do
-    case @app_command_impl.run(app, "docker-options:report #{app.dokku_app}") do
+    case @app_command_impl.run(app, "docker-options:report", [app.dokku_app]) do
       {:ok, output} ->
         if has_option?(output, phase, option) do
           {:ok, true}
@@ -35,7 +35,7 @@ defmodule DokkuRemote.Commands.DockerOptions.App do
   end
 
   def add(%AppCommand{} = app, phase, option) do
-    case @app_command_impl.run(app, "docker-options:add #{app.dokku_app} #{phase} #{option}") do
+    case @app_command_impl.run(app, "docker-options:add", [app.dokku_app, phase, option]) do
       {:ok, _output} -> :ok
       {:error, output, exit} -> {:error, output, exit}
     end

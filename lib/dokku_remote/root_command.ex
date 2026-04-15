@@ -14,13 +14,13 @@ defmodule DokkuRemote.RootCommand do
         ""
       end
 
-    full_command = "ssh root@#{dokku_host} #{command} 2>&1"
+    args = ["root@#{dokku_host}" | String.split(command)]
 
     if verbose do
-      IO.puts("Running command as root: #{full_command}")
+      IO.puts("Running command as root: ssh #{Enum.join(args, " ")}")
     end
 
-    case @system_impl.shell(full_command, into: into) do
+    case @system_impl.cmd("ssh", args, stderr_to_stdout: true, into: into) do
       {output, 0} ->
         {:ok, output}
 

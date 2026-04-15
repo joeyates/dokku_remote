@@ -8,7 +8,7 @@ defmodule DokkuRemote.Commands.Git.App do
                     )
 
   def from_image(%AppCommand{} = app, image) do
-    case @app_command_impl.run(app, "git:from-image #{app.dokku_app} #{image}") do
+    case @app_command_impl.run(app, "git:from-image", [app.dokku_app, image]) do
       {:ok, _output} -> :ok
       {:error, output, exit} -> {:error, output, exit}
     end

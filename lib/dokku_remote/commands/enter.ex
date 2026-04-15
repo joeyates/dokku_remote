@@ -2,7 +2,7 @@ defmodule DokkuRemote.Commands.Enter do
   alias DokkuRemote.AppCommand
 
   # NOTE: The `enter` Dokku command allocates an interactive pseudo-TTY. The
-  # underlying `AppCommand.run/2` collects output and waits for process exit,
+  # the underlying `AppCommand.run/3` collects output and waits for process exit,
   # so it cannot support a live interactive shell session. This implementation
   # is suitable for non-interactive / scripted invocations only (e.g. passing a
   # command via `enter APP PROCESS_TYPE -- CMD`). For full interactive use you
@@ -15,7 +15,7 @@ defmodule DokkuRemote.Commands.Enter do
                     )
 
   def run(%AppCommand{} = app) do
-    case @app_command_impl.run(app, "enter #{app.dokku_app}") do
+    case @app_command_impl.run(app, "enter", [app.dokku_app]) do
       {:ok, _output} -> :ok
       {:error, output, exit} -> {:error, output, exit}
     end

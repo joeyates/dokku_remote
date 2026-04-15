@@ -13,7 +13,8 @@ defmodule DokkuRemote.Commands.Letsencrypt.AppTest do
   describe "set/3" do
     test "runs letsencrypt:set and returns :ok" do
       expect(DokkuRemote.AppCommand.Mock, :run, fn _app,
-                                                   "letsencrypt:set my-app email user@example.com" ->
+                                                   "letsencrypt:set",
+                                                   ["my-app", "email", "user@example.com"] ->
         {:ok, ""}
       end)
 
@@ -21,7 +22,7 @@ defmodule DokkuRemote.Commands.Letsencrypt.AppTest do
     end
 
     test "returns error tuple on failure" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, _cmd ->
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, _cmd, _params ->
         {:error, "connection refused", 1}
       end)
 
@@ -31,7 +32,7 @@ defmodule DokkuRemote.Commands.Letsencrypt.AppTest do
 
   describe "unset/2" do
     test "runs letsencrypt:set (unset) and returns :ok" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "letsencrypt:set my-app email" ->
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "letsencrypt:set", ["my-app", "email"] ->
         {:ok, ""}
       end)
 
@@ -39,7 +40,7 @@ defmodule DokkuRemote.Commands.Letsencrypt.AppTest do
     end
 
     test "returns error tuple on failure" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, _cmd ->
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, _cmd, _params ->
         {:error, "connection refused", 1}
       end)
 
@@ -49,7 +50,7 @@ defmodule DokkuRemote.Commands.Letsencrypt.AppTest do
 
   describe "enable/1" do
     test "runs letsencrypt:enable and returns :ok" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "letsencrypt:enable my-app" ->
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, "letsencrypt:enable", ["my-app"] ->
         {:ok, ""}
       end)
 
@@ -57,7 +58,7 @@ defmodule DokkuRemote.Commands.Letsencrypt.AppTest do
     end
 
     test "returns error tuple on failure" do
-      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, _cmd ->
+      expect(DokkuRemote.AppCommand.Mock, :run, fn _app, _cmd, _params ->
         {:error, "connection refused", 1}
       end)
 
