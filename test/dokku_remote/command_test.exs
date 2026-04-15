@@ -1,0 +1,46 @@
+defmodule DokkuRemote.CommandTest do
+  use ExUnit.Case, async: true
+
+  import ExUnit.CaptureIO
+  import Mox
+
+  alias DokkuRemote.Command
+
+  setup :verify_on_exit!
+
+  describe "run/2" do
+    test "builds the correct SSH command" do
+      expect(DokkuRemote.System.Mock, :shell, fn cmd, _opts ->
+        assert cmd == "ssh dokku@dokku.example.com version 2>&1"
+        {"dokku version 0.30.0", 0}
+      end)
+
+      Command.run("dokku.example.com", "version")
+    end
+
+    test "returns {:ok, output} on success" do
+      expect(DokkuRemote.System.Mock, :shell, fn _cmd, _opts -> {"dokku v0.30.0", 0} end)
+
+      assert Command.run("dokku.example.com", "version") == {:ok, "dokku v0.30.0"}
+    end
+
+    test "returns {:error, output, exit_code} on failure" do
+      expect(DokkuRemote.System.Mock, :shell, fn _cmd, _opts -> {"error output", 1} end)
+
+      assert Command.run("dokku.example.com", "version") == {:error, "error output", 1}
+    end
+  end
+
+  describe "run/3 with verbose: true" do
+    test "prints the command before running" do
+      expect(DokkuRemote.System.Mock, :shell, fn _cmd, _opts -> {"", 0} end)
+
+      output =
+        capture_io(fn ->
+          Command.run("dokku.example.com", "version", verbose: true)
+        end)
+
+      assert output =~ "ssh dokku@dokku.example.com version 2>&1"
+    end
+  end
+end
