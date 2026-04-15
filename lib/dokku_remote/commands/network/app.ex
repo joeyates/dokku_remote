@@ -11,11 +11,11 @@ defmodule DokkuRemote.Commands.Network.App do
     @app_command_impl.run(app, "network:report", [app.dokku_app])
   end
 
-  def get(%App{} = app, network, property) do
+  def get(%App{} = app, property) do
     case @app_command_impl.run(
            app,
            "network:report",
-           [app.dokku_app, network, "--network-#{property}"]
+           [app.dokku_app, "--network-#{property}"]
          ) do
       {:ok, output} ->
         value = String.trim(output)

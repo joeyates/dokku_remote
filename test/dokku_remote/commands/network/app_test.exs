@@ -9,19 +9,18 @@ defmodule DokkuRemote.Commands.Network.AppTest do
 
   defp app(), do: DokkuRemote.App.new(dokku_app: "my-app", dokku_host: "dokku.example.com")
 
-  describe "get/3" do
+  describe "get/2" do
     test "returns {:ok, trimmed_value} on success" do
       expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
                                                           "network:report",
                                                           [
                                                             "my-app",
-                                                            "mynet",
                                                             "--network-attach-post-create"
                                                           ] ->
         {:ok, "mynet\n"}
       end)
 
-      assert App.get(app(), "mynet", "attach-post-create") == {:ok, "mynet"}
+      assert App.get(app(), "attach-post-create") == {:ok, "mynet"}
     end
 
     test "returns {:error, output, exit_code} on failure" do
@@ -29,13 +28,12 @@ defmodule DokkuRemote.Commands.Network.AppTest do
                                                           "network:report",
                                                           [
                                                             "my-app",
-                                                            "mynet",
                                                             "--network-attach-post-create"
                                                           ] ->
         {:error, "App my-app does not exist", 1}
       end)
 
-      assert App.get(app(), "mynet", "attach-post-create") ==
+      assert App.get(app(), "attach-post-create") ==
                {:error, "App my-app does not exist", 1}
     end
   end
