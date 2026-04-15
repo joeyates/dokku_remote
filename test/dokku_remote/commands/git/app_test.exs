@@ -13,7 +13,7 @@ defmodule DokkuRemote.Commands.Git.AppTest do
     test "returns :ok on success" do
       expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
                                                           "git:from-image",
-                                                          ["my-app", "nginx:latest"] ->
+                                                          ["nginx:latest"] ->
         {:ok, ""}
       end)
 
@@ -23,7 +23,7 @@ defmodule DokkuRemote.Commands.Git.AppTest do
     test "returns {:error, output, exit_code} on failure" do
       expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
                                                           "git:from-image",
-                                                          ["my-app", "nginx:latest"] ->
+                                                          ["nginx:latest"] ->
         {:error, "App my-app does not exist", 1}
       end)
 

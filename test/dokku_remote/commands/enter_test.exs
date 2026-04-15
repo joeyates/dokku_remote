@@ -11,19 +11,23 @@ defmodule DokkuRemote.Commands.EnterTest do
 
   describe "run/1" do
     test "returns :ok on success" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "enter", ["my-app"] ->
+      app = app()
+
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn ^app, "enter" ->
         {:ok, ""}
       end)
 
-      assert Enter.run(app()) == :ok
+      assert Enter.run(app) == :ok
     end
 
     test "returns {:error, output, exit_code} on failure" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "enter", ["my-app"] ->
+      app = app()
+
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn ^app, "enter" ->
         {:error, "App my-app does not exist", 1}
       end)
 
-      assert Enter.run(app()) == {:error, "App my-app does not exist", 1}
+      assert Enter.run(app) == {:error, "App my-app does not exist", 1}
     end
   end
 end

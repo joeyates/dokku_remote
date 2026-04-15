@@ -8,14 +8,14 @@ defmodule DokkuRemote.Commands.Ports.App do
                     )
 
   def get_prococol_mapping(%App{} = app, "http") do
-    with {:ok, output} <- @app_command_impl.run(app, "ports:list", [app.dokku_app]),
+    with {:ok, output} <- @app_command_impl.run(app, "ports:list"),
          {:ok, host_port, container_port} <- extract_port_mapping(output, "http") do
       {:ok, host_port, container_port}
     end
   end
 
   def set_protocol_mapping(%App{} = app, "http", port) do
-    case @app_command_impl.run(app, "ports:set", [app.dokku_app, "http:80:#{port}"]) do
+    case @app_command_impl.run(app, "ports:set", ["http:80:#{port}"]) do
       {:ok, _output} -> :ok
       {:error, output, exit} -> {:error, output, exit}
     end

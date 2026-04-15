@@ -11,7 +11,7 @@ defmodule DokkuRemote.Commands.Domains.AppTest do
 
   describe "get/1" do
     test "returns the domain when domains are enabled and a vhost is set" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "domains:report", ["my-app"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "domains:report" ->
         {:ok,
          "=====> my-app Domain Information\n  Domains app enabled: true\n  Domains app vhosts: my-app.example.com\n"}
       end)
@@ -20,7 +20,7 @@ defmodule DokkuRemote.Commands.Domains.AppTest do
     end
 
     test "returns {:ok, nil} when domains are disabled" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "domains:report", ["my-app"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "domains:report" ->
         {:ok,
          "=====> my-app Domain Information\n  Domains app enabled: false\n  Domains app vhosts: my-app.example.com\n"}
       end)
@@ -29,7 +29,7 @@ defmodule DokkuRemote.Commands.Domains.AppTest do
     end
 
     test "returns {:ok, nil} when no vhost line matches" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "domains:report", ["my-app"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "domains:report" ->
         {:ok, "=====> my-app Domain Information\n  Domains app enabled: true\n"}
       end)
 
@@ -37,7 +37,7 @@ defmodule DokkuRemote.Commands.Domains.AppTest do
     end
 
     test "returns error tuple on failure" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "domains:report", ["my-app"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "domains:report" ->
         {:error, "connection refused", 1}
       end)
 
@@ -49,7 +49,7 @@ defmodule DokkuRemote.Commands.Domains.AppTest do
     test "runs domains:set and returns :ok" do
       expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
                                                           "domains:set",
-                                                          ["my-app", "my-app.example.com"] ->
+                                                          ["my-app.example.com"] ->
         {:ok, ""}
       end)
 

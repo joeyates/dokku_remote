@@ -8,15 +8,11 @@ defmodule DokkuRemote.Commands.Network.App do
                     )
 
   def report(%App{} = app) do
-    @app_command_impl.run(app, "network:report", [app.dokku_app])
+    @app_command_impl.run(app, "network:report")
   end
 
   def get(%App{} = app, property) do
-    case @app_command_impl.run(
-           app,
-           "network:report",
-           [app.dokku_app, "--network-#{property}"]
-         ) do
+    case @app_command_impl.run(app, "network:report", ["--network-#{property}"]) do
       {:ok, output} ->
         value = String.trim(output)
         {:ok, value}
@@ -27,7 +23,7 @@ defmodule DokkuRemote.Commands.Network.App do
   end
 
   def set(%App{} = app, property, value) do
-    case @app_command_impl.run(app, "network:set", [app.dokku_app, property, value]) do
+    case @app_command_impl.run(app, "network:set", [property, value]) do
       {:ok, _output} -> :ok
       {:error, output, exit} -> {:error, output, exit}
     end

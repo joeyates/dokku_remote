@@ -11,61 +11,89 @@ defmodule DokkuRemote.Commands.Config.AppTest do
 
   describe "set/4" do
     test "runs config:set with --no-restart by default" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
-                                                          "config:set",
-                                                          ["--no-restart", "my-app", "FOO=bar"] ->
-        {:ok, ""}
-      end)
+      app = app()
 
-      assert App.set(app(), "FOO", "bar") == :ok
+      expect(
+        DokkuRemote.Dokku.Command.App.Mock,
+        :run,
+        fn ^app, "config:set", ["FOO=bar", "--no-restart"] ->
+          {:ok, ""}
+        end
+      )
+
+      assert App.set(app, "FOO", "bar") == :ok
     end
 
     test "runs config:set without --no-restart when restart: true" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
-                                                          "config:set",
-                                                          ["my-app", "FOO=bar"] ->
-        {:ok, ""}
-      end)
+      app = app()
 
-      assert App.set(app(), "FOO", "bar", restart: true) == :ok
+      expect(
+        DokkuRemote.Dokku.Command.App.Mock,
+        :run,
+        fn ^app, "config:set", ["FOO=bar"] ->
+          {:ok, ""}
+        end
+      )
+
+      assert App.set(app, "FOO", "bar", restart: true) == :ok
     end
 
     test "returns error tuple on failure" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, _cmd, _params ->
-        {:error, "connection refused", 1}
-      end)
+      app = app()
 
-      assert App.set(app(), "FOO", "bar") == {:error, "connection refused", 1}
+      expect(
+        DokkuRemote.Dokku.Command.App.Mock,
+        :run,
+        fn ^app, _cmd, _params ->
+          {:error, "connection refused", 1}
+        end
+      )
+
+      assert App.set(app, "FOO", "bar") == {:error, "connection refused", 1}
     end
   end
 
   describe "unset/3" do
     test "runs config:unset with --no-restart by default" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
-                                                          "config:unset",
-                                                          ["--no-restart", "my-app", "FOO"] ->
-        {:ok, ""}
-      end)
+      app = app()
 
-      assert App.unset(app(), "FOO") == :ok
+      expect(
+        DokkuRemote.Dokku.Command.App.Mock,
+        :run,
+        fn ^app, "config:unset", ["FOO", "--no-restart"] ->
+          {:ok, ""}
+        end
+      )
+
+      assert App.unset(app, "FOO") == :ok
     end
 
     test "runs config:unset without --no-restart when restart: true" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
-                                                          "config:unset",
-                                                          ["my-app", "FOO"] ->
-        {:ok, ""}
-      end)
+      app = app()
 
-      assert App.unset(app(), "FOO", restart: true) == :ok
+      expect(
+        DokkuRemote.Dokku.Command.App.Mock,
+        :run,
+        fn ^app, "config:unset", ["FOO"] ->
+          {:ok, ""}
+        end
+      )
+
+      assert App.unset(app, "FOO", restart: true) == :ok
     end
 
     test "returns error tuple on failure" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, _cmd, _params ->
-        {:error, "connection refused", 1}
-      end)
+      app = app()
 
-      assert App.unset(app(), "FOO") == {:error, "connection refused", 1}
+      expect(
+        DokkuRemote.Dokku.Command.App.Mock,
+        :run,
+        fn ^app, _cmd, _params ->
+          {:error, "connection refused", 1}
+        end
+      )
+
+      assert App.unset(app, "FOO") == {:error, "connection refused", 1}
     end
   end
 end

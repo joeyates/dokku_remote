@@ -11,7 +11,7 @@ defmodule DokkuRemote.Commands.Logs.AppTest do
 
   describe "get/2" do
     test "returns log output with no options" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "logs", ["my-app"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "logs", [] ->
         {:ok, "log line 1\nlog line 2\n"}
       end)
 
@@ -19,9 +19,7 @@ defmodule DokkuRemote.Commands.Logs.AppTest do
     end
 
     test "passes --num flag when n: option is given" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
-                                                          "logs",
-                                                          ["my-app", "--num", "50"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "logs", ["--num", "50"] ->
         {:ok, "log line\n"}
       end)
 
@@ -29,7 +27,7 @@ defmodule DokkuRemote.Commands.Logs.AppTest do
     end
 
     test "passes --tail flag when tail: true is given" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "logs", ["my-app", "--tail"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "logs", ["--tail"] ->
         {:ok, ""}
       end)
 
@@ -37,9 +35,7 @@ defmodule DokkuRemote.Commands.Logs.AppTest do
     end
 
     test "passes --ps flag when process_type: option is given" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
-                                                          "logs",
-                                                          ["my-app", "--ps", "web"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "logs", ["--ps", "web"] ->
         {:ok, "web log\n"}
       end)
 
@@ -49,7 +45,7 @@ defmodule DokkuRemote.Commands.Logs.AppTest do
     test "combines multiple options" do
       expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
                                                           "logs",
-                                                          ["my-app", "--num", "10", "--ps", "web"] ->
+                                                          ["--num", "10", "--ps", "web"] ->
         {:ok, "web log\n"}
       end)
 
@@ -57,7 +53,7 @@ defmodule DokkuRemote.Commands.Logs.AppTest do
     end
 
     test "does not pass --tail flag when tail: false is given" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "logs", ["my-app"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "logs", [] ->
         {:ok, ""}
       end)
 
@@ -65,7 +61,7 @@ defmodule DokkuRemote.Commands.Logs.AppTest do
     end
 
     test "returns {:error, output, exit_code} on failure" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "logs", ["my-app"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "logs", [] ->
         {:error, "App my-app does not exist", 1}
       end)
 

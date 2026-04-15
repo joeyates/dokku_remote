@@ -11,7 +11,7 @@ defmodule DokkuRemote.Commands.Config.App do
     restart = opts[:restart]
     flags = if restart, do: [], else: ["--no-restart"]
 
-    case @app_command_impl.run(app, "config:set", flags ++ [app.dokku_app, "#{key}=#{value}"]) do
+    case @app_command_impl.run(app, "config:set", ["#{key}=#{value}"] ++ flags) do
       {:ok, _output} -> :ok
       {:error, output, exit} -> {:error, output, exit}
     end
@@ -21,7 +21,7 @@ defmodule DokkuRemote.Commands.Config.App do
     restart = opts[:restart]
     flags = if restart, do: [], else: ["--no-restart"]
 
-    case @app_command_impl.run(app, "config:unset", flags ++ [app.dokku_app, key]) do
+    case @app_command_impl.run(app, "config:unset", [key] ++ flags) do
       {:ok, _output} -> :ok
       {:error, output, exit} -> {:error, output, exit}
     end

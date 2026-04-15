@@ -14,7 +14,7 @@ defmodule DokkuRemote.Commands.Ports.AppTest do
       output =
         "=====> Port mappings for my-app\n-----> scheme  host_port  container_port\n       http   80   3000\n"
 
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "ports:list", ["my-app"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "ports:list" ->
         {:ok, output}
       end)
 
@@ -24,7 +24,7 @@ defmodule DokkuRemote.Commands.Ports.AppTest do
     test "returns {:error, :not_set} when no mapping exists for the protocol" do
       output = "=====> Port mappings for my-app\n"
 
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "ports:list", ["my-app"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "ports:list" ->
         {:ok, output}
       end)
 
@@ -32,7 +32,7 @@ defmodule DokkuRemote.Commands.Ports.AppTest do
     end
 
     test "returns {:error, output, exit_code} on command failure" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "ports:list", ["my-app"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "ports:list" ->
         {:error, "App my-app does not exist", 1}
       end)
 
@@ -42,9 +42,7 @@ defmodule DokkuRemote.Commands.Ports.AppTest do
 
   describe "set_protocol_mapping/3" do
     test "runs ports:set for http:80 and returns :ok" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
-                                                          "ports:set",
-                                                          ["my-app", "http:80:3000"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "ports:set", ["http:80:3000"] ->
         {:ok, ""}
       end)
 

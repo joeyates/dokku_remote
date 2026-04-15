@@ -3,6 +3,8 @@ defmodule DokkuRemote.Dokku.Command.App do
 
   @system_impl Application.compile_env(:dokku_remote, :System, System)
 
+  @callback run(app :: %App{}, command :: String.t()) ::
+              {:ok, String.t()} | {:error, String.t(), non_neg_integer()}
   @callback run(app :: %App{}, command :: String.t(), params :: [String.t()]) ::
               {:ok, String.t()} | {:error, String.t(), non_neg_integer()}
 
@@ -14,7 +16,7 @@ defmodule DokkuRemote.Dokku.Command.App do
         ""
       end
 
-    args = ["dokku@#{app.dokku_host}", command | params]
+    args = ["dokku@#{app.dokku_host}", command, app.dokku_app | params]
 
     if app.verbose do
       IO.puts("Running command: ssh #{Enum.join(args, " ")}")

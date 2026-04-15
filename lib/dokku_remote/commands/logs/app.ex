@@ -14,7 +14,7 @@ defmodule DokkuRemote.Commands.Logs.App do
       |> maybe_add_flag(opts[:tail], fn _ -> ["--tail"] end)
       |> maybe_add_flag(opts[:process_type], fn pt -> ["--ps", pt] end)
 
-    @app_command_impl.run(app, "logs", [app.dokku_app | flags])
+    @app_command_impl.run(app, "logs", flags)
   end
 
   defp maybe_add_flag(acc, nil, _builder), do: acc

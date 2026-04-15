@@ -18,9 +18,7 @@ defmodule DokkuRemote.Commands.DockerOptions.AppTest do
           Docker options build:
       """
 
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
-                                                          "docker-options:report",
-                                                          ["my-app"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "docker-options:report" ->
         {:ok, output}
       end)
 
@@ -35,9 +33,7 @@ defmodule DokkuRemote.Commands.DockerOptions.AppTest do
           Docker options build:
       """
 
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
-                                                          "docker-options:report",
-                                                          ["my-app"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "docker-options:report" ->
         {:ok, output}
       end)
 
@@ -45,9 +41,7 @@ defmodule DokkuRemote.Commands.DockerOptions.AppTest do
     end
 
     test "returns {:error, output, exit_code} on command failure" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
-                                                          "docker-options:report",
-                                                          ["my-app"] ->
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "docker-options:report" ->
         {:error, "App my-app does not exist", 1}
       end)
 
@@ -60,7 +54,7 @@ defmodule DokkuRemote.Commands.DockerOptions.AppTest do
     test "returns :ok on success" do
       expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
                                                           "docker-options:add",
-                                                          ["my-app", "deploy", "--restart=always"] ->
+                                                          ["deploy", "--restart=always"] ->
         {:ok, ""}
       end)
 
@@ -70,7 +64,7 @@ defmodule DokkuRemote.Commands.DockerOptions.AppTest do
     test "returns {:error, output, exit_code} on failure" do
       expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
                                                           "docker-options:add",
-                                                          ["my-app", "run", "--cap-add=NET_ADMIN"] ->
+                                                          ["run", "--cap-add=NET_ADMIN"] ->
         {:error, "App my-app does not exist", 1}
       end)
 

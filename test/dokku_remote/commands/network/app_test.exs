@@ -11,79 +11,95 @@ defmodule DokkuRemote.Commands.Network.AppTest do
 
   describe "get/2" do
     test "returns {:ok, trimmed_value} on success" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
+      app = app()
+
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn ^app,
                                                           "network:report",
                                                           [
-                                                            "my-app",
                                                             "--network-attach-post-create"
                                                           ] ->
         {:ok, "mynet\n"}
       end)
 
-      assert App.get(app(), "attach-post-create") == {:ok, "mynet"}
+      assert App.get(app, "attach-post-create") == {:ok, "mynet"}
     end
 
     test "returns {:error, output, exit_code} on failure" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
+      app = app()
+
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn ^app,
                                                           "network:report",
                                                           [
-                                                            "my-app",
                                                             "--network-attach-post-create"
                                                           ] ->
         {:error, "App my-app does not exist", 1}
       end)
 
-      assert App.get(app(), "attach-post-create") ==
+      assert App.get(app, "attach-post-create") ==
                {:error, "App my-app does not exist", 1}
     end
   end
 
   describe "report/1" do
     test "returns {:ok, output} on success" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "network:report", ["my-app"] ->
+      app = app()
+
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn ^app, "network:report" ->
         {:ok, "=====> my-app network information\n  Network attach post create:  \n"}
       end)
 
-      assert App.report(app()) ==
+      assert App.report(app) ==
                {:ok, "=====> my-app network information\n  Network attach post create:  \n"}
     end
 
     test "returns {:error, output, exit_code} on failure" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app, "network:report", ["my-app"] ->
+      app = app()
+
+      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn ^app, "network:report" ->
         {:error, "App my-app does not exist", 1}
       end)
 
-      assert App.report(app()) == {:error, "App my-app does not exist", 1}
+      assert App.report(app) == {:error, "App my-app does not exist", 1}
     end
   end
 
   describe "set/3" do
     test "returns :ok on success" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
-                                                          "network:set",
-                                                          [
-                                                            "my-app",
-                                                            "attach-post-create",
-                                                            "mynet"
-                                                          ] ->
-        {:ok, ""}
-      end)
+      app = app()
 
-      assert App.set(app(), "attach-post-create", "mynet") == :ok
+      expect(
+        DokkuRemote.Dokku.Command.App.Mock,
+        :run,
+        fn ^app,
+           "network:set",
+           [
+             "attach-post-create",
+             "mynet"
+           ] ->
+          {:ok, ""}
+        end
+      )
+
+      assert App.set(app, "attach-post-create", "mynet") == :ok
     end
 
     test "returns {:error, output, exit_code} on failure" do
-      expect(DokkuRemote.Dokku.Command.App.Mock, :run, fn _app,
-                                                          "network:set",
-                                                          [
-                                                            "my-app",
-                                                            "attach-post-create",
-                                                            "mynet"
-                                                          ] ->
-        {:error, "App my-app does not exist", 1}
-      end)
+      app = app()
 
-      assert App.set(app(), "attach-post-create", "mynet") ==
+      expect(
+        DokkuRemote.Dokku.Command.App.Mock,
+        :run,
+        fn ^app,
+           "network:set",
+           [
+             "attach-post-create",
+             "mynet"
+           ] ->
+          {:error, "App my-app does not exist", 1}
+        end
+      )
+
+      assert App.set(app, "attach-post-create", "mynet") ==
                {:error, "App my-app does not exist", 1}
     end
   end

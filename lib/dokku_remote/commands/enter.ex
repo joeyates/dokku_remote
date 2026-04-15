@@ -15,7 +15,7 @@ defmodule DokkuRemote.Commands.Enter do
                     )
 
   def run(%App{} = app) do
-    case @app_command_impl.run(app, "enter", [app.dokku_app]) do
+    case @app_command_impl.run(app, "enter") do
       {:ok, _output} -> :ok
       {:error, output, exit} -> {:error, output, exit}
     end

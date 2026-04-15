@@ -8,25 +8,25 @@ defmodule DokkuRemote.Commands.Ps.App do
                     )
 
   def rebuild(%App{} = app) do
-    case @app_command_impl.run(app, "ps:rebuild", [app.dokku_app]) do
+    case @app_command_impl.run(app, "ps:rebuild") do
       {:ok, _output} -> :ok
       {:error, output, exit} -> {:error, output, exit}
     end
   end
 
   def report(%App{} = app) do
-    @app_command_impl.run(app, "ps:report", [app.dokku_app])
+    @app_command_impl.run(app, "ps:report")
   end
 
   def restart(%App{} = app) do
-    case @app_command_impl.run(app, "ps:restart", [app.dokku_app]) do
+    case @app_command_impl.run(app, "ps:restart") do
       {:ok, _output} -> :ok
       {:error, output, exit} -> {:error, output, exit}
     end
   end
 
   def stop(%App{} = app) do
-    case @app_command_impl.run(app, "ps:stop", [app.dokku_app]) do
+    case @app_command_impl.run(app, "ps:stop") do
       {:ok, _output} -> :ok
       {:error, output, exit} -> {:error, output, exit}
     end

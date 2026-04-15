@@ -29,11 +29,11 @@ defmodule DokkuRemote.Dokku.Command.AppTest do
 
       expect(DokkuRemote.System.Mock, :cmd, fn program, args, _opts ->
         assert program == "ssh"
-        assert args == ["dokku@dokku.example.com", "apps:list"]
+        assert args == ["dokku@dokku.example.com", "apps:exists", "my-app"]
         {"", 0}
       end)
 
-      AppCommand.run(app, "apps:list")
+      AppCommand.run(app, "apps:exists")
     end
 
     test "passes params as additional SSH arguments" do
@@ -44,7 +44,7 @@ defmodule DokkuRemote.Dokku.Command.AppTest do
         {"", 0}
       end)
 
-      AppCommand.run(app, "git:from-image", ["my-app", "nginx:latest"])
+      AppCommand.run(app, "git:from-image", ["nginx:latest"])
     end
 
     test "returns {:ok, output} on success" do
