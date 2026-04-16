@@ -40,4 +40,36 @@ defmodule DokkuRemote.Commands.RedisTest do
       assert Redis.list(@dokku_host) == {:error, "connection refused", 1}
     end
   end
+
+  describe "links/2" do
+    test "returns {:ok, list} of linked app names on success" do
+      expect(DokkuRemote.Dokku.Command.Mock, :run, fn "dokku.example.com",
+                                                      "redis:links",
+                                                      ["my-cache"] ->
+        {:ok, "my-app\n"}
+      end)
+
+      assert Redis.links(@dokku_host, "my-cache") == {:ok, ["my-app"]}
+    end
+
+    test "returns {:ok, empty list} when no apps are linked" do
+      expect(DokkuRemote.Dokku.Command.Mock, :run, fn "dokku.example.com",
+                                                      "redis:links",
+                                                      ["my-cache"] ->
+        {:ok, ""}
+      end)
+
+      assert Redis.links(@dokku_host, "my-cache") == {:ok, []}
+    end
+
+    test "returns {:error, output, exit_code} on failure" do
+      expect(DokkuRemote.Dokku.Command.Mock, :run, fn "dokku.example.com",
+                                                      "redis:links",
+                                                      ["my-cache"] ->
+        {:error, "not found", 1}
+      end)
+
+      assert Redis.links(@dokku_host, "my-cache") == {:error, "not found", 1}
+    end
+  end
 end

@@ -13,11 +13,26 @@ defmodule DokkuRemote.Commands.Redis do
     end
   end
 
+  @spec links(String.t(), String.t()) :: {:ok, [String.t()]} | {:error, any(), any()}
+  def links(dokku_host, service) do
+    case @command_impl.run(dokku_host, "redis:links", [service]) do
+      {:ok, output} -> {:ok, parse_lines(output)}
+      {:error, output, exit_code} -> {:error, output, exit_code}
+    end
+  end
+
   defp parse_list(output) do
     output
     |> String.split("\n", trim: true)
     |> Enum.map(&String.trim/1)
     |> Enum.reject(&String.starts_with?(&1, "=====>"))
+    |> Enum.reject(&(&1 == ""))
+  end
+
+  defp parse_lines(output) do
+    output
+    |> String.split("\n", trim: true)
+    |> Enum.map(&String.trim/1)
     |> Enum.reject(&(&1 == ""))
   end
 end
