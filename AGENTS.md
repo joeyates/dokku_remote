@@ -6,3 +6,7 @@
 * `mix test FILENAME` - Run the tests in the specified file.
 * `mix deps.get` - Fetch and update the project's dependencies.
 * `mix compile` - Compile the project's source code.
+
+# Documentation
+
+See [docs/development.md](docs/development.md) for project conventions, including how to run tests, use mocks, and handle `Application` env cleanup in tests.
