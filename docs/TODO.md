@@ -37,7 +37,7 @@ Implement the missing dokku command functions.
 
 # Implement Missing Dokku Calls
 
-Status: [ ]
+Status: [x]
 
 ## Description
 
