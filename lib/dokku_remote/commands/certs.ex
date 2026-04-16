@@ -7,6 +7,8 @@ defmodule DokkuRemote.Commands.Certs do
 
   @type reports :: %{String.t() => __MODULE__.Report.t()}
 
+  @callback report(String.t()) :: {:ok, reports()} | {:error, any(), any()}
+
   @spec report(String.t()) :: {:ok, reports()} | {:error, any(), any()}
   def report(dokku_host) do
     case @command_impl.run(dokku_host, "certs:report") do
