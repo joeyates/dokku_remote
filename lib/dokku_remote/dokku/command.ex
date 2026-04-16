@@ -1,5 +1,5 @@
 defmodule DokkuRemote.Dokku.Command do
-  @system_impl Application.compile_env(:dokku_remote, :System, System)
+  @ssh_impl Application.compile_env(:dokku_remote, :Ssh, DokkuRemote.Ssh)
 
   @callback run(dokku_host :: String.t(), command :: String.t()) ::
               {:ok, String.t()} | {:error, String.t(), non_neg_integer()}
@@ -14,27 +14,6 @@ defmodule DokkuRemote.Dokku.Command do
               {:ok, String.t()} | {:error, String.t(), non_neg_integer()}
 
   def run(dokku_host, command, params \\ [], opts \\ []) do
-    verbose = Keyword.get(opts, :verbose, false)
-
-    into =
-      if verbose do
-        CollectableStreamer.new(fn line -> IO.write(line) end)
-      else
-        ""
-      end
-
-    args = ["dokku@#{dokku_host}" | [command | params]]
-
-    if verbose do
-      IO.puts("Running command: ssh #{Enum.join(args, " ")}")
-    end
-
-    case @system_impl.cmd("ssh", args, stderr_to_stdout: true, into: into) do
-      {output, 0} ->
-        {:ok, output}
-
-      {output, exit} ->
-        {:error, output, exit}
-    end
+    @ssh_impl.run(dokku_host, "dokku", command, params, opts)
   end
 end
