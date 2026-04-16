@@ -9,7 +9,7 @@ defmodule DokkuRemote.Root.CommandTest do
   setup :verify_on_exit!
 
   describe "run/2" do
-    test "builds the correct root SSH program and args" do
+    test "builds the correct root SSH program and one arg" do
       expect(DokkuRemote.System.Mock, :cmd, fn program, args, _opts ->
         assert program == "ssh"
         assert args == ["root@dokku.example.com", "some-command"]
@@ -17,6 +17,16 @@ defmodule DokkuRemote.Root.CommandTest do
       end)
 
       Command.run("dokku.example.com", "some-command")
+    end
+
+    test "builds the correct root SSH program and multiple args" do
+      expect(DokkuRemote.System.Mock, :cmd, fn program, args, _opts ->
+        assert program == "ssh"
+        assert args == ["root@dokku.example.com", "some-command", "param1", "param2"]
+        {"output", 0}
+      end)
+
+      Command.run("dokku.example.com", "some-command", ["param1", "param2"])
     end
 
     test "returns {:ok, output} on success" do
@@ -38,7 +48,7 @@ defmodule DokkuRemote.Root.CommandTest do
 
       output =
         capture_io(fn ->
-          Command.run("dokku.example.com", "some-command", verbose: true)
+          Command.run("dokku.example.com", "some-command", [], verbose: true)
         end)
 
       assert output =~ "ssh root@dokku.example.com some-command"
