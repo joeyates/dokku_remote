@@ -1,31 +1,15 @@
 defmodule DokkuRemote.Root.Command do
-  @system_impl Application.compile_env(:dokku_remote, :System, System)
+  @ssh_impl Application.compile_env(:dokku_remote, :Ssh, DokkuRemote.Ssh)
 
-  @callback run(dokku_host :: String.t(), command :: String.t()) ::
+  @callback run(
+              dokku_host :: String.t(),
+              command :: String.t(),
+              params :: [String.t()],
+              opts :: Keyword.t()
+            ) ::
               {:ok, String.t()} | {:error, String.t(), non_neg_integer()}
 
-  def run(dokku_host, command, opts \\ []) do
-    verbose = Keyword.get(opts, :verbose, false)
-
-    into =
-      if verbose do
-        CollectableStreamer.new(fn line -> IO.write(line) end)
-      else
-        ""
-      end
-
-    args = ["root@#{dokku_host}" | String.split(command)]
-
-    if verbose do
-      IO.puts("Running command as root: ssh #{Enum.join(args, " ")}")
-    end
-
-    case @system_impl.cmd("ssh", args, stderr_to_stdout: true, into: into) do
-      {output, 0} ->
-        {:ok, output}
-
-      {output, exit} ->
-        {:error, output, exit}
-    end
+  def run(dokku_host, command, params \\ [], opts \\ []) do
+    @ssh_impl.run(dokku_host, "root", command, params, opts)
   end
 end

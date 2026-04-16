@@ -16,3 +16,7 @@ end
 ```
 
 The docs can be found at <https://hexdocs.pm/dokku_remote>.
+
+## Development
+
+See [docs/development.md](docs/development.md) for notes on running the test suite and project conventions.
