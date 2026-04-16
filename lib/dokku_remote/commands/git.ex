@@ -7,6 +7,8 @@ defmodule DokkuRemote.Commands.Git do
 
   @type reports :: %{String.t() => __MODULE__.Report.t()}
 
+  @callback report(String.t()) :: {:ok, reports()} | {:error, any(), any()}
+
   @spec report(String.t()) :: {:ok, reports()} | {:error, any(), any()}
   @doc """
   Retrieves the git deployment report for all applications on the specified Dokku host.
