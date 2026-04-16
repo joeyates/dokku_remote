@@ -6,6 +6,7 @@ defmodule DokkuRemote.Commands.Postgres do
                 )
 
   @spec list(String.t()) :: {:ok, [String.t()]} | {:error, any(), any()}
+  @callback list(String.t()) :: {:ok, [String.t()]} | {:error, any(), any()}
   def list(dokku_host) do
     case @command_impl.run(dokku_host, "postgres:list") do
       {:ok, output} -> {:ok, parse_list(output)}
@@ -14,6 +15,7 @@ defmodule DokkuRemote.Commands.Postgres do
   end
 
   @spec links(String.t(), String.t()) :: {:ok, [String.t()]} | {:error, any(), any()}
+  @callback links(String.t(), String.t()) :: {:ok, [String.t()]} | {:error, any(), any()}
   def links(dokku_host, service) do
     case @command_impl.run(dokku_host, "postgres:links", [service]) do
       {:ok, output} -> {:ok, parse_lines(output)}
