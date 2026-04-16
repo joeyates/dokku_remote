@@ -65,7 +65,7 @@ defmodule DokkuRemote.Commands.Git do
     {app_data, acc}
   end
 
-  defp parse_line("Git source image: " <> rest, {app_data, acc}) when is_map(app_data) do
+  defp parse_line("Git source image:" <> rest, {app_data, acc}) when is_map(app_data) do
     entry = String.trim(rest)
     app_data = Map.put(app_data, :source_image, entry)
     {app_data, acc}
