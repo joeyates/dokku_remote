@@ -6,6 +6,7 @@ defmodule DokkuRemote.Commands.Plugin do
                 )
 
   @spec list(String.t()) :: {:ok, [__MODULE__.Entry.t()]} | {:error, any(), any()}
+  @callback list(String.t()) :: {:ok, [__MODULE__.Entry.t()]} | {:error, any(), any()}
   def list(dokku_host) do
     case @command_impl.run(dokku_host, "plugin:list") do
       {:ok, output} -> {:ok, parse(output)}
