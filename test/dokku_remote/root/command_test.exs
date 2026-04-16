@@ -1,7 +1,6 @@
 defmodule DokkuRemote.Root.CommandTest do
   use ExUnit.Case, async: true
 
-  import ExUnit.CaptureIO
   import Mox
 
   alias DokkuRemote.Root.Command
@@ -9,49 +8,52 @@ defmodule DokkuRemote.Root.CommandTest do
   setup :verify_on_exit!
 
   describe "run/2" do
-    test "builds the correct root SSH program and one arg" do
-      expect(DokkuRemote.System.Mock, :cmd, fn program, args, _opts ->
-        assert program == "ssh"
-        assert args == ["root@dokku.example.com", "some-command"]
-        {"output", 0}
+    test "delegates to Ssh.Mock with user root and one command" do
+      expect(DokkuRemote.Ssh.Mock, :run, fn host, user, command, params, _opts ->
+        assert host == "dokku.example.com"
+        assert user == "root"
+        assert command == "some-command"
+        assert params == []
+        {:ok, "output"}
       end)
 
       Command.run("dokku.example.com", "some-command")
     end
 
-    test "builds the correct root SSH program and multiple args" do
-      expect(DokkuRemote.System.Mock, :cmd, fn program, args, _opts ->
-        assert program == "ssh"
-        assert args == ["root@dokku.example.com", "some-command", "param1", "param2"]
-        {"output", 0}
+    test "delegates to Ssh.Mock with user root and multiple params" do
+      expect(DokkuRemote.Ssh.Mock, :run, fn _host, _user, _command, params, _opts ->
+        assert params == ["param1", "param2"]
+        {:ok, "output"}
       end)
 
       Command.run("dokku.example.com", "some-command", ["param1", "param2"])
     end
 
     test "returns {:ok, output} on success" do
-      expect(DokkuRemote.System.Mock, :cmd, fn _prog, _args, _opts -> {"ok output", 0} end)
+      expect(DokkuRemote.Ssh.Mock, :run, fn _host, _user, _command, _params, _opts ->
+        {:ok, "ok output"}
+      end)
 
       assert Command.run("dokku.example.com", "some-command") == {:ok, "ok output"}
     end
 
     test "returns {:error, output, exit_code} on failure" do
-      expect(DokkuRemote.System.Mock, :cmd, fn _prog, _args, _opts -> {"fail", 2} end)
+      expect(DokkuRemote.Ssh.Mock, :run, fn _host, _user, _command, _params, _opts ->
+        {:error, "fail", 2}
+      end)
 
       assert Command.run("dokku.example.com", "some-command") == {:error, "fail", 2}
     end
   end
 
   describe "run/3 with verbose: true" do
-    test "prints the SSH command before running" do
-      expect(DokkuRemote.System.Mock, :cmd, fn _prog, _args, _opts -> {"", 0} end)
+    test "passes verbose: true to Ssh.Mock" do
+      expect(DokkuRemote.Ssh.Mock, :run, fn _host, _user, _command, _params, opts ->
+        assert Keyword.get(opts, :verbose) == true
+        {:ok, ""}
+      end)
 
-      output =
-        capture_io(fn ->
-          Command.run("dokku.example.com", "some-command", [], verbose: true)
-        end)
-
-      assert output =~ "ssh root@dokku.example.com some-command"
+      Command.run("dokku.example.com", "some-command", [], verbose: true)
     end
   end
 end
