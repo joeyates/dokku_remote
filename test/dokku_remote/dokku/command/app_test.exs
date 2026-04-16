@@ -1,7 +1,6 @@
 defmodule DokkuRemote.Dokku.Command.AppTest do
   use ExUnit.Case, async: true
 
-  import ExUnit.CaptureIO
   import Mox
 
   alias DokkuRemote.Dokku.Command.App, as: AppCommand
@@ -24,24 +23,26 @@ defmodule DokkuRemote.Dokku.Command.AppTest do
   end
 
   describe "run/3" do
-    test "builds the correct SSH program and args" do
+    test "delegates to Ssh.Mock with correct host, user, command and app as first param" do
       app = App.new(dokku_app: "my-app", dokku_host: "dokku.example.com")
 
-      expect(DokkuRemote.System.Mock, :cmd, fn program, args, _opts ->
-        assert program == "ssh"
-        assert args == ["dokku@dokku.example.com", "apps:exists", "my-app"]
-        {"", 0}
+      expect(DokkuRemote.Ssh.Mock, :run, fn host, user, command, params, _opts ->
+        assert host == "dokku.example.com"
+        assert user == "dokku"
+        assert command == "apps:exists"
+        assert params == ["my-app"]
+        {:ok, ""}
       end)
 
       AppCommand.run(app, "apps:exists")
     end
 
-    test "passes params as additional SSH arguments" do
+    test "passes params as additional SSH arguments after the app name" do
       app = App.new(dokku_app: "my-app", dokku_host: "dokku.example.com")
 
-      expect(DokkuRemote.System.Mock, :cmd, fn _program, args, _opts ->
-        assert args == ["dokku@dokku.example.com", "git:from-image", "my-app", "nginx:latest"]
-        {"", 0}
+      expect(DokkuRemote.Ssh.Mock, :run, fn _host, _user, _command, params, _opts ->
+        assert params == ["my-app", "nginx:latest"]
+        {:ok, ""}
       end)
 
       AppCommand.run(app, "git:from-image", ["nginx:latest"])
@@ -50,7 +51,9 @@ defmodule DokkuRemote.Dokku.Command.AppTest do
     test "returns {:ok, output} on success" do
       app = App.new(dokku_app: "my-app", dokku_host: "dokku.example.com")
 
-      expect(DokkuRemote.System.Mock, :cmd, fn _prog, _args, _opts -> {"some output", 0} end)
+      expect(DokkuRemote.Ssh.Mock, :run, fn _host, _user, _command, _params, _opts ->
+        {:ok, "some output"}
+      end)
 
       assert {:ok, "some output"} = AppCommand.run(app, "apps:list")
     end
@@ -58,24 +61,24 @@ defmodule DokkuRemote.Dokku.Command.AppTest do
     test "returns {:error, output, exit_code} on failure" do
       app = App.new(dokku_app: "my-app", dokku_host: "dokku.example.com")
 
-      expect(DokkuRemote.System.Mock, :cmd, fn _prog, _args, _opts -> {"error output", 1} end)
+      expect(DokkuRemote.Ssh.Mock, :run, fn _host, _user, _command, _params, _opts ->
+        {:error, "error output", 1}
+      end)
 
       assert {:error, "error output", 1} = AppCommand.run(app, "apps:list")
     end
   end
 
   describe "run/3 with verbose: true" do
-    test "prints the SSH command before running" do
+    test "passes verbose: true to Ssh.Mock" do
       app = App.new(dokku_app: "my-app", dokku_host: "dokku.example.com", verbose: true)
 
-      expect(DokkuRemote.System.Mock, :cmd, fn _prog, _args, _opts -> {"", 0} end)
+      expect(DokkuRemote.Ssh.Mock, :run, fn _host, _user, _command, _params, opts ->
+        assert Keyword.get(opts, :verbose) == true
+        {:ok, ""}
+      end)
 
-      output =
-        capture_io(fn ->
-          AppCommand.run(app, "apps:list")
-        end)
-
-      assert output =~ "ssh dokku@dokku.example.com apps:list"
+      AppCommand.run(app, "apps:list")
     end
   end
 end
