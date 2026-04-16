@@ -34,3 +34,21 @@ Implement the missing dokku command functions.
 - `ps:stop`
 - `storage:ensure-directory`
 - `storage:mount`
+
+# Implement Missing Dokku Calls
+
+Status: [ ]
+
+## Description
+
+Implement the remaining Dokku command wrappers.
+
+## Technical Specifics
+
+- `certs:report`
+- `ps:scale` (with optional `[app]` arg)
+- `plugin:list`
+- `postgres:list`
+- `postgres:links` (with `[service]` arg)
+- `redis:list`
+- `redis:links` (with `[service]` arg)
