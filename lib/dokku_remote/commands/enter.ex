@@ -14,6 +14,8 @@ defmodule DokkuRemote.Commands.Enter do
                       DokkuRemote.Dokku.Command.App
                     )
 
+  @callback run(app :: App.t(), process :: String.t(), params :: [String.t()]) ::
+              {:ok, output :: String.t()} | {:error, output :: String.t(), exit_code :: integer()}
   def run(%App{} = app, process, params) do
     case @app_command_impl.run(app, "enter", [process | params]) do
       {:ok, output} ->
