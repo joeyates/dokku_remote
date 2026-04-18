@@ -13,7 +13,7 @@ defmodule DokkuRemote.Dokku.Command do
             ) ::
               {:ok, String.t()} | {:error, String.t(), non_neg_integer()}
 
-  def run(dokku_host, command, params \\ [], opts \\ []) do
+  def run(dokku_host, command, params \\ [], opts \\ []) when is_binary(dokku_host) do
     @ssh_impl.run(dokku_host, "dokku", command, params, opts)
   end
 end

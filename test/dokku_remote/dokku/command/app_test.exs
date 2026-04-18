@@ -22,7 +22,7 @@ defmodule DokkuRemote.Dokku.Command.AppTest do
     end
   end
 
-  describe "run/3" do
+  describe "run/2" do
     test "delegates to Ssh.Mock with correct host, user, command and app as first param" do
       app = App.new(dokku_app: "my-app", dokku_host: "dokku.example.com")
 
@@ -66,6 +66,12 @@ defmodule DokkuRemote.Dokku.Command.AppTest do
       end)
 
       assert {:error, "error output", 1} = AppCommand.run(app, "apps:list")
+    end
+
+    test "fails unless an App struct is passed" do
+      assert_raise FunctionClauseError, fn ->
+        AppCommand.run(%{dokku_app: "my-app", dokku_host: "dokku.example.com"}, "apps:list")
+      end
     end
   end
 
