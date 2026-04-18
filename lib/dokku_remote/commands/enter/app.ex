@@ -1,4 +1,4 @@
-defmodule DokkuRemote.Commands.Enter do
+defmodule DokkuRemote.Commands.Enter.App do
   alias DokkuRemote.App
 
   # NOTE: The `enter` Dokku command allocates an interactive pseudo-TTY. The

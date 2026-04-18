@@ -1,9 +1,9 @@
-defmodule DokkuRemote.Commands.EnterTest do
+defmodule DokkuRemote.Commands.Enter.AppTest do
   use ExUnit.Case, async: true
 
   import Mox
 
-  alias DokkuRemote.Commands.Enter
+  alias DokkuRemote.Commands.Enter.App
 
   setup :verify_on_exit!
 
@@ -21,7 +21,7 @@ defmodule DokkuRemote.Commands.EnterTest do
         end
       )
 
-      assert Enter.run(app, "web", ["pwd"]) == {:ok, "/app"}
+      assert App.run(app, "web", ["pwd"]) == {:ok, "/app"}
     end
 
     test "returns {:error, output, exit_code} on failure" do
@@ -35,7 +35,7 @@ defmodule DokkuRemote.Commands.EnterTest do
         end
       )
 
-      assert Enter.run(app, "web", ["pwd"]) ==
+      assert App.run(app, "web", ["pwd"]) ==
                {:error, "App my-app does not exist", 1}
     end
   end
