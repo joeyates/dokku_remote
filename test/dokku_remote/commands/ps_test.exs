@@ -36,7 +36,7 @@ defmodule DokkuRemote.Commands.PsTest do
          Ps restart policy:             on-failure:10
          Restore:                       true
          Running:                       true
-         Status web 1:                  running (CID: 1fb72325e15)
+         Status web 1:                  running (CID: deadbeef123)
          Stop timeout seconds:          70
   """
 
@@ -69,6 +69,14 @@ defmodule DokkuRemote.Commands.PsTest do
                ps_restart_policy: "on-failure:10",
                restore: true,
                running: true,
+               status_entries: [
+                 %DokkuRemote.Commands.Ps.Report.StatusEntry{
+                   cid: "1fb72325e15",
+                   index: 1,
+                   process_name: "web",
+                   running: true
+                 }
+               ],
                stop_timeout_seconds: 30
              }
 
@@ -87,6 +95,14 @@ defmodule DokkuRemote.Commands.PsTest do
                ps_restart_policy: "on-failure:10",
                restore: true,
                running: true,
+               status_entries: [
+                 %DokkuRemote.Commands.Ps.Report.StatusEntry{
+                   cid: "deadbeef123",
+                   index: 1,
+                   process_name: "web",
+                   running: true
+                 }
+               ],
                stop_timeout_seconds: 70
              }
     end

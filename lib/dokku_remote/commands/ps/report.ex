@@ -1,6 +1,5 @@
 defmodule DokkuRemote.Commands.Ps.Report do
   @moduledoc """
-  For now, we are skipping the "Status PROCESS INDEX: ..." lines
   """
   @keys [
     :app_name,
@@ -18,7 +17,9 @@ defmodule DokkuRemote.Commands.Ps.Report do
     :stop_timeout_seconds
   ]
   @enforce_keys @keys
-  defstruct @keys
+  defstruct @keys ++ [status_entries: []]
+
+  alias __MODULE__.StatusEntry
 
   @type t :: %__MODULE__{
           app_name: String.t(),
@@ -33,6 +34,7 @@ defmodule DokkuRemote.Commands.Ps.Report do
           ps_restart_policy: String.t() | nil,
           restore: boolean(),
           running: boolean(),
+          status_entries: [StatusEntry.t()],
           stop_timeout_seconds: non_neg_integer()
         }
 
@@ -77,6 +79,7 @@ defmodule DokkuRemote.Commands.Ps.Report do
       ps_restart_policy: nil,
       restore: nil,
       running: nil,
+      status_entries: [],
       stop_timeout_seconds: nil
     }
   end
@@ -131,6 +134,12 @@ defmodule DokkuRemote.Commands.Ps.Report do
   defp parse_line("Running: " <> value, app_data) do
     value = String.trim(value)
     %{app_data | running: value == "true"}
+  end
+
+  defp parse_line("Status " <> value, app_data) do
+    {:ok, status_entry} = StatusEntry.from_line("Status " <> value)
+    status_entries = app_data[:status_entries] || []
+    %{app_data | status_entries: status_entries ++ [status_entry]}
   end
 
   defp parse_line("Stop timeout seconds: " <> value, app_data) do

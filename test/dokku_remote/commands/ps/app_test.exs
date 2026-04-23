@@ -80,6 +80,14 @@ defmodule DokkuRemote.Commands.Ps.AppTest do
                    ps_restart_policy: "on-failure:10",
                    restore: true,
                    running: true,
+                   status_entries: [
+                     %DokkuRemote.Commands.Ps.Report.StatusEntry{
+                       cid: "1fb72325e15",
+                       index: 1,
+                       process_name: "web",
+                       running: true
+                     }
+                   ],
                    stop_timeout_seconds: 30
                  }
                }
