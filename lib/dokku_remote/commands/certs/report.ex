@@ -1,8 +1,10 @@
 defmodule DokkuRemote.Commands.Certs.Report do
-  @keys [
+  @required_keys [
     :app_name,
     :dir,
-    :enabled,
+    :enabled
+  ]
+  @optional_keys [
     :hostnames,
     :expires_at,
     :issuer,
@@ -10,8 +12,8 @@ defmodule DokkuRemote.Commands.Certs.Report do
     :subject,
     :verified
   ]
-  @enforce_keys @keys
-  defstruct @keys
+  @enforce_keys @required_keys
+  defstruct @required_keys ++ @optional_keys
 
   @type t :: %__MODULE__{
           app_name: String.t(),

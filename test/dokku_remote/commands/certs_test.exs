@@ -64,6 +64,31 @@ defmodule DokkuRemote.Commands.CertsTest do
              } = reports["other-app"]
     end
 
+    test "handles an app with no SSL cert (missing optional fields)" do
+      output = """
+      =====> no-cert-app ssl information
+             Ssl dir:                       /home/dokku/no-cert-app/tls
+             Ssl enabled:                   false
+      """
+
+      expect(DokkuRemote.Dokku.Command.Mock, :run, fn "dokku.example.com", "certs:report" ->
+        {:ok, output}
+      end)
+
+      assert {:ok, reports} = Certs.report(@dokku_host)
+
+      assert %Report{
+               app_name: "no-cert-app",
+               enabled: false,
+               hostnames: nil,
+               expires_at: nil,
+               issuer: nil,
+               starts_at: nil,
+               subject: nil,
+               verified: nil
+             } = reports["no-cert-app"]
+    end
+
     test "returns {:ok, empty map} when output is empty" do
       expect(DokkuRemote.Dokku.Command.Mock, :run, fn "dokku.example.com", "certs:report" ->
         {:ok, ""}

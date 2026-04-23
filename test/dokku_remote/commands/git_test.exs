@@ -60,6 +60,25 @@ defmodule DokkuRemote.Commands.GitTest do
              } = reports["other-app"]
     end
 
+    test "handles an app with no git deployment (missing optional fields)" do
+      output = """
+      =====> new-app git information
+      Git deploy branch:           main
+      Git global deploy branch:    master
+      Git keep git dir:            false
+      Git rev env var:             GIT_REV
+      """
+
+      expect(DokkuRemote.Dokku.Command.Mock, :run, fn "dokku.example.com", "git:report" ->
+        {:ok, output}
+      end)
+
+      assert {:ok, reports} = Git.report(@dokku_host)
+
+      assert %Report{app_name: "new-app", sha: nil, source_image: nil, last_updated_at: nil} =
+               reports["new-app"]
+    end
+
     test "returns {:ok, empty map} when output is empty" do
       expect(DokkuRemote.Dokku.Command.Mock, :run, fn "dokku.example.com", "git:report" ->
         {:ok, ""}

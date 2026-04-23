@@ -1,16 +1,18 @@
 defmodule DokkuRemote.Commands.Git.Report do
-  @keys [
+  @required_keys [
     :app_name,
     :deploy_branch,
     :global_deploy_branch,
     :keep_git_dir,
-    :rev_env_var,
+    :rev_env_var
+  ]
+  @optional_keys [
     :sha,
     :source_image,
     :last_updated_at
   ]
-  @enforce_keys @keys
-  defstruct @keys
+  @enforce_keys @required_keys
+  defstruct @required_keys ++ Enum.map(@optional_keys, &{&1, nil})
 
   @type t :: %__MODULE__{
           app_name: String.t(),
