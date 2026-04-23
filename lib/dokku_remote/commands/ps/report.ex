@@ -36,6 +36,7 @@ defmodule DokkuRemote.Commands.Ps.Report do
           stop_timeout_seconds: non_neg_integer()
         }
 
+  @spec from_all_output(String.t()) :: {:ok, %{String.t() => t()}} | {:error, any()}
   def from_all_output(output) do
     output
     |> String.split(
