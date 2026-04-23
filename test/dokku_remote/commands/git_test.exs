@@ -12,21 +12,21 @@ defmodule DokkuRemote.Commands.GitTest do
 
   @sample_output """
   =====> my-app git information
-  Git deploy branch:           main
-  Git global deploy branch:    master
-  Git keep git dir:            false
-  Git rev env var:             GIT_REV
-  Git sha:                     abc123def456
-  Git source image:
-  Git last updated at:         1713225600
+         Git deploy branch:           main
+         Git global deploy branch:    master
+         Git keep git dir:            false
+         Git rev env var:             GIT_REV
+         Git sha:                     abc123def456
+         Git source image:
+         Git last updated at:         1713225600
   =====> other-app git information
-  Git deploy branch:           develop
-  Git global deploy branch:    master
-  Git keep git dir:            true
-  Git rev env var:             GIT_REV
-  Git sha:                     deadbeef1234
-  Git source image:            nginx:latest
-  Git last updated at:         1713312000
+         Git deploy branch:           develop
+         Git global deploy branch:    master
+         Git keep git dir:            true
+         Git rev env var:             GIT_REV
+         Git sha:                     deadbeef1234
+         Git source image:            nginx:latest
+         Git last updated at:         1713312000
   """
 
   describe "report/1" do
