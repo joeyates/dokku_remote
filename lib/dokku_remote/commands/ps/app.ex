@@ -16,6 +16,7 @@ defmodule DokkuRemote.Commands.Ps.App do
     end
   end
 
+  @callback report(App.t()) :: {:ok, Report.t()} | {:error, any(), any()}
   def report(%App{} = app) do
     case @app_command_impl.run(app, "ps:report") do
       {:ok, output} -> Report.from_output(output)
@@ -30,7 +31,7 @@ defmodule DokkuRemote.Commands.Ps.App do
     end
   end
 
-  @callback scale(String.t(), String.t()) :: {:ok, Scale.t()} | {:error, any(), any()}
+  @callback scale(App.t()) :: {:ok, Scale.t()} | {:error, any(), any()}
   def scale(%App{} = app) do
     case @app_command_impl.run(app, "ps:scale") do
       {:ok, output} -> Scale.from_output(output)

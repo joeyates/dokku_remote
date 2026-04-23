@@ -11,6 +11,8 @@ defmodule DokkuRemote.Commands.Network.App do
     @app_command_impl.run(app, "network:report")
   end
 
+  @callback get(app :: App.t(), property :: String.t()) ::
+              {:ok, value :: String.t()} | {:error, output :: String.t(), exit_code :: integer()}
   def get(%App{} = app, property) do
     case @app_command_impl.run(app, "network:report", ["--network-#{property}"]) do
       {:ok, output} ->

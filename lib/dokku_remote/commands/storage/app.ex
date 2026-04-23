@@ -14,6 +14,8 @@ defmodule DokkuRemote.Commands.Storage.App do
     end
   end
 
+  @callback mount_exists?(App.t(), String.t(), String.t()) ::
+              {:ok, boolean()} | {:error, any(), any()}
   def mount_exists?(%App{} = app, host_dir, container_dir) do
     case @app_command_impl.run(app, "storage:report", ["--storage-run-mounts"]) do
       {:ok, output} ->

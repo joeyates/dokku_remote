@@ -4,6 +4,12 @@ defmodule DokkuRemote.Root.Command do
   @callback run(
               dokku_host :: String.t(),
               command :: String.t(),
+              params :: [String.t()]
+            ) ::
+              {:ok, String.t()} | {:error, String.t(), non_neg_integer()}
+  @callback run(
+              dokku_host :: String.t(),
+              command :: String.t(),
               params :: [String.t()],
               opts :: Keyword.t()
             ) ::

@@ -8,17 +8,17 @@ defmodule DokkuRemote.Commands.Ps.Scale do
           proctypes: %{String.t() => non_neg_integer()}
         }
 
+  @spec from_all_output(String.t()) :: {:ok, %{String.t() => t()}}
   def from_all_output(output) do
     output
     |> String.split(~r/(?=-----> Scaling for )/, trim: true)
     |> Enum.map(&from_output/1)
-    |> Enum.reduce(%{}, fn
-      {:ok, scale}, acc -> Map.put(acc, scale.app_name, scale)
-      :error, acc -> acc
-    end)
+    |> Enum.map(fn {:ok, scale} -> {scale.app_name, scale} end)
+    |> Enum.into(%{})
     |> then(&{:ok, &1})
   end
 
+  @spec from_output(String.t()) :: {:ok, t()}
   def from_output(output) do
     app_data =
       output
@@ -45,6 +45,4 @@ defmodule DokkuRemote.Commands.Ps.Scale do
         app_data
     end
   end
-
-  def parse_line(_line, app_data), do: app_data
 end
