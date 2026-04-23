@@ -44,7 +44,7 @@ defmodule DokkuRemote.Commands.GitTest do
                keep_git_dir: false,
                rev_env_var: "GIT_REV",
                sha: "abc123def456",
-               source_image: "",
+               source_image: nil,
                last_updated_at: 1_713_225_600
              } = reports["my-app"]
 

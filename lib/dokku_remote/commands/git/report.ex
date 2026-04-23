@@ -70,7 +70,8 @@ defmodule DokkuRemote.Commands.Git.Report do
   end
 
   defp parse_line("Git source image:" <> rest, app_data) do
-    entry = String.trim(rest)
+    value = String.trim(rest)
+    entry = if value == "", do: nil, else: value
     Map.put(app_data, :source_image, entry)
   end
 

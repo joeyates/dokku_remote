@@ -6,7 +6,7 @@ defmodule DokkuRemote.MixProject do
   def project() do
     [
       app: @app,
-      version: "0.3.5",
+      version: "0.3.6",
       elixir: "~> 1.17",
       elixirc_paths: elixirc_paths(Mix.env()),
       description: "An Elixir client library for running dokku commands on a remote host",
