@@ -44,27 +44,27 @@ defmodule DokkuRemote.Commands.Git.Report do
     %{app_name: app_name}
   end
 
-  defp parse_line("Git deploy branch: " <> rest, app_data) do
+  defp parse_line("Git deploy branch:" <> rest, app_data) do
     entry = String.trim(rest)
     Map.put(app_data, :deploy_branch, entry)
   end
 
-  defp parse_line("Git global deploy branch: " <> rest, app_data) do
+  defp parse_line("Git global deploy branch:" <> rest, app_data) do
     entry = String.trim(rest)
     Map.put(app_data, :global_deploy_branch, entry)
   end
 
-  defp parse_line("Git keep git dir: " <> rest, app_data) do
+  defp parse_line("Git keep git dir:" <> rest, app_data) do
     entry = String.trim(rest)
     Map.put(app_data, :keep_git_dir, entry == "true")
   end
 
-  defp parse_line("Git rev env var: " <> rest, app_data) do
+  defp parse_line("Git rev env var:" <> rest, app_data) do
     entry = String.trim(rest)
     Map.put(app_data, :rev_env_var, entry)
   end
 
-  defp parse_line("Git sha: " <> rest, app_data) do
+  defp parse_line("Git sha:" <> rest, app_data) do
     entry = String.trim(rest)
     Map.put(app_data, :sha, entry)
   end
@@ -75,9 +75,10 @@ defmodule DokkuRemote.Commands.Git.Report do
     Map.put(app_data, :source_image, entry)
   end
 
-  defp parse_line("Git last updated at: " <> rest, app_data) do
-    entry = String.trim(rest)
-    Map.put(app_data, :last_updated_at, String.to_integer(entry))
+  defp parse_line("Git last updated at:" <> rest, app_data) do
+    value = String.trim(rest)
+    entry = if value == "", do: nil, else: String.to_integer(value)
+    Map.put(app_data, :last_updated_at, entry)
   end
 
   defp parse_line(_line, {any, acc}), do: {any, acc}
